@@ -56,9 +56,9 @@ ASGI_APPLICATION = "config.asgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME", "shag_django"),
-        "USER": os.getenv("DB_USER", "shag"),
-        "PASSWORD": os.getenv("DB_PASSWORD", "shag"),
+        "NAME": os.getenv("DB_NAME", "lat_ai"),
+        "USER": os.getenv("DB_USER", "lat_ai"),
+        "PASSWORD": os.getenv("DB_PASSWORD", "lat_ai"),
         "HOST": os.getenv("DB_HOST", "127.0.0.1"),
         "PORT": os.getenv("DB_PORT", "5432"),
         "CONN_MAX_AGE": 60,

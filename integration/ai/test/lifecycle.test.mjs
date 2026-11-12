@@ -11,7 +11,7 @@ const answer={choices:[{message:{content:JSON.stringify({text:'Кавычки о
 const deferred=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {promise,resolve};};
 async function setup(t,{failUnload=false,blockedLoad=false,failReadiness=false}={}){
  assert.equal(typeof impl.createLifecycle,'function','operator recovery lifecycle must exist');
- const dir=mkdtempSync(join(tmpdir(),'lad-l01-'));t.after(()=>rmSync(dir,{recursive:true,force:true}));
+ const dir=mkdtempSync(join(tmpdir(),'lat-ai-l01-'));t.after(()=>rmSync(dir,{recursive:true,force:true}));
  const lock=join(dir,'lock'),loaded=new Set(['foreign-model']),unloads=[],posts=[];
  const dispatched=deferred(),gate=deferred();let hold=false;
  const loadOwned=options=>LocalModel.loadOwned({...options,lockPath:lock,recoveryDelayMs:0,
@@ -57,6 +57,6 @@ test('generation timeout leaves processing headroom within the 8 second internal
 test('authenticated private control exposes retire, unauthenticated caller cannot invoke it',async t=>{
  let actions=[];const server=createWorkerServer({secret:'x'.repeat(64),bridge:{},health:()=>({}),control:async action=>{actions.push(action);return {off:true};}});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));t.after(()=>server.close());const url='http://127.0.0.1:'+server.address().port+'/control';
- const call=secret=>fetch(url,{method:'POST',headers:{'Content-Type':'application/json','X-LAD-IPC':secret},body:JSON.stringify({action:'retire'})});
+ const call=secret=>fetch(url,{method:'POST',headers:{'Content-Type':'application/json','X-LAT-IPC':secret},body:JSON.stringify({action:'retire'})});
  assert.equal((await call('wrong')).status,401);assert.equal((await call('x'.repeat(64))).status,200);assert.deepEqual(actions,['retire']);
 });

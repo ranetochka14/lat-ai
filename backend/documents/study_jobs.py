@@ -26,7 +26,7 @@ ERROR_CODE = re.compile(r'[a-zA-Z0-9_]{1,80}')
 @contextmanager
 def worker_lock():
     """Release the singleton dispatcher lock when the process exits, including on a crash."""
-    lockfile = Path(settings.LAD_AI_RUNTIME) / 'study-worker.lock'
+    lockfile = Path(settings.LAT_AI_RUNTIME) / 'study-worker.lock'
     with lockfile.open('a+b') as lock:
         lock.seek(0)
         try:
@@ -47,16 +47,16 @@ def worker_lock():
 
 
 def call_study(endpoint, body, resolved):
-    port = settings.LAD_AI_PORT
+    port = settings.LAT_AI_PORT
     if type(port) is not int or not 1 <= port <= 65535:
         raise OSError('invalid_worker_configuration')
-    secret = Path(settings.LAD_AI_SECRET_FILE).read_text(encoding='utf-8').strip()
+    secret = Path(settings.LAT_AI_SECRET_FILE).read_text(encoding='utf-8').strip()
     if len(secret) < 32:
         raise OSError('invalid_worker_configuration')
     data = json.dumps({'body': body, 'resolved': resolved}, ensure_ascii=True).encode('ascii')
     request = Request(
         f'http://127.0.0.1:{port}{endpoint}', data=data, method='POST',
-        headers={'Content-Type': 'application/json', 'X-LAD-IPC': secret},
+        headers={'Content-Type': 'application/json', 'X-LAT-IPC': secret},
     )
     opener = build_opener(ProxyHandler({}), NoRedirect())
     try:

@@ -20,7 +20,7 @@ const boundPack=(value=pack())=>({...value,questions:value.questions.map(({expla
 const keys=()=>({checks:[0,1,2].map(correct_index=>({key_evidence:'The cited sentence explicitly assigns this operation to the keyed clause.',question_supported:true,correct_index,hint_safe:true}))});
 const feedback=()=>({checks:[0,1,2].map(()=>({feedback_review:'Each paired explanation contrasts the option with its stated role in the excerpt.',hint_review:'The hint provides a distinction without naming the clause that answers the question.',remaining_step:'Classify the operation or stage and match it to the clause.',hint_reveals_answer:false,feedback_valid:true,hint_usable:true}))});
 function harness(t,replies){
- const dir=mkdtempSync(join(tmpdir(),'lad-study-feedback-')),posts=[],signals=[];
+ const dir=mkdtempSync(join(tmpdir(),'lat-ai-study-feedback-')),posts=[],signals=[];
  t.after(()=>rmSync(dir,{recursive:true,force:true}));
  const model=new LocalModel({lockPath:join(dir,'lock'),fetchImpl:async(url,options)=>{
   if(url.endsWith('/models'))return Response.json({models:[{loaded_instances:[{id:'lat-ai-demo-9b'}]}]});

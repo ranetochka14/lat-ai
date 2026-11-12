@@ -20,7 +20,7 @@ class StudyApiFixture:
         self.other = User.objects.create_user('other@example.test', 'test-only-password')
         self.client = APIClient()
         self.client.force_authenticate(self.user)
-        folder = tempfile.TemporaryDirectory(dir=settings.LAD_AI_RUNTIME)
+        folder = tempfile.TemporaryDirectory(dir=settings.LAT_AI_RUNTIME)
         self.addCleanup(folder.cleanup)
         override = override_settings(MEDIA_ROOT=Path(folder.name))
         override.enable()

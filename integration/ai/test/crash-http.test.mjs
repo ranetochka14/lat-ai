@@ -18,20 +18,20 @@ async function start(dir){
 }
 function post(port,input){
  let req;
- const result=new Promise(resolve=>{req=http.request({host:'127.0.0.1',port,path:'/ask',method:'POST',headers:{'Content-Type':'application/json','X-LAD-IPC':'t'.repeat(64)}},res=>{let body='';res.on('data',x=>body+=x);res.on('end',()=>resolve({status:res.statusCode,body:JSON.parse(body)}));});req.on('error',error=>resolve({error:error.code}));req.end(JSON.stringify(input));});
+ const result=new Promise(resolve=>{req=http.request({host:'127.0.0.1',port,path:'/ask',method:'POST',headers:{'Content-Type':'application/json','X-LAT-IPC':'t'.repeat(64)}},res=>{let body='';res.on('data',x=>body+=x);res.on('end',()=>resolve({status:res.statusCode,body:JSON.parse(body)}));});req.on('error',error=>resolve({error:error.code}));req.end(JSON.stringify(input));});
  return {req,result};
 }
 async function reached(dir){for(let i=0;i<150;i++){if(existsSync(join(dir,'calls.txt')))return;await wait(20);}throw Error('request never dispatched');}
 async function stop(child){if(child.exitCode===null){const done=once(child,'exit');child.kill();await done;}}
 test('lost HTTP after dispatch replays the completed response without second generation',async t=>{
- const dir=mkdtempSync(join(tmpdir(),'lad-http-'));const worker=await start(dir);t.after(async()=>{await stop(worker.child);rmSync(dir,{recursive:true,force:true});});
+ const dir=mkdtempSync(join(tmpdir(),'lat-ai-http-'));const worker=await start(dir);t.after(async()=>{await stop(worker.child);rmSync(dir,{recursive:true,force:true});});
  const body=input(),first=post(worker.port,body);await reached(dir);first.req.destroy();await first.result;
  const repeat=await post(worker.port,body).result;assert.equal(repeat.status,200);
  const again=await post(worker.port,body).result;assert.deepEqual(again,repeat);
  assert.equal(readFileSync(join(dir,'calls.txt'),'utf8').trim().split('\n').length,1);
 });
 test('worker killed after dispatch leaves durable pending and restart refuses regeneration',async t=>{
- const dir=mkdtempSync(join(tmpdir(),'lad-crash-'));let worker=await start(dir);t.after(async()=>{await stop(worker.child);rmSync(dir,{recursive:true,force:true});});
+ const dir=mkdtempSync(join(tmpdir(),'lat-ai-crash-'));let worker=await start(dir);t.after(async()=>{await stop(worker.child);rmSync(dir,{recursive:true,force:true});});
  const body=input(),first=post(worker.port,body);await reached(dir);await stop(worker.child);await first.result;
  worker=await start(dir);const repeat=await post(worker.port,body).result;
  assert.equal(repeat.status,503);assert.equal(readFileSync(join(dir,'calls.txt'),'utf8').trim().split('\n').length,1);

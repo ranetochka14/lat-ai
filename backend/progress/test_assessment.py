@@ -11,7 +11,7 @@ from courses.models import Course, Lesson, Exercise
 from tutor.context import content_digest, resolve_context
 from .models import ExerciseAttempt, LessonProgress
 
-@override_settings(LAD_AI_AUTOGRADE=True)
+@override_settings(LAT_AI_AUTOGRADE=True)
 class AssessmentTests(TestCase):
     def setUp(self):
         self.user=User.objects.create_user('grade@example.test','Test-only-12345')
@@ -19,10 +19,10 @@ class AssessmentTests(TestCase):
         self.lesson=Lesson.objects.create(course=self.course,title='Types',content='Strings')
         self.exercise=Exercise.objects.create(lesson=self.lesson,title='Types',description='print("3" + "2")',is_published=True,max_score=60)
         self.client=APIClient();self.client.force_authenticate(self.user)
-        self.tmp=tempfile.TemporaryDirectory(dir=settings.LAD_AI_RUNTIME);self.addCleanup(self.tmp.cleanup)
+        self.tmp=tempfile.TemporaryDirectory(dir=settings.LAT_AI_RUNTIME);self.addCleanup(self.tmp.cleanup)
         self.mapping=Path(self.tmp.name)/'mapping.json'
         self.mapping.write_text(json.dumps({'version':'test','contexts':{f'{self.course.id}:{self.lesson.id}:{self.exercise.id}':{'task_key':'L1.types.1','lesson_key':'L1','digest':content_digest(self.course,self.lesson,self.exercise)}}}))
-        self.override=override_settings(LAD_AI_MAPPING=self.mapping);self.override.enable();self.addCleanup(self.override.disable)
+        self.override=override_settings(LAT_AI_MAPPING=self.mapping);self.override.enable();self.addCleanup(self.override.disable)
 
     def submit(self,answer='Строки соединяются, вывод 32.'):
         return self.client.post('/api/v1/progress/attempts/',{'exercise':self.exercise.id,'answer':answer,'score':999,'status':'checked'},format='json')
@@ -89,7 +89,7 @@ class AssessmentTests(TestCase):
             self.submit()
         self.assertEqual(seen,[True], 'Initial writer must be inside the transaction before progress SELECTs')
 
-    @override_settings(LAD_AI_AUTOGRADE=False)
+    @override_settings(LAT_AI_AUTOGRADE=False)
     def test_production_default_unchanged(self):
         with patch('progress.assessment.call_assessment') as worker:r=self.submit()
         worker.assert_not_called();self.assertEqual(r.data['status'],'submitted')

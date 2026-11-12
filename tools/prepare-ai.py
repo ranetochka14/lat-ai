@@ -6,15 +6,15 @@ import sys
 from pathlib import Path
 
 project=Path(__file__).resolve().parent.parent
-runtime=Path(os.environ.get('LAD_AI_RUNTIME', project/'.runtime'/'i02')).resolve()
+runtime=Path(os.environ.get('LAT_AI_RUNTIME', project/'.runtime'/'i02')).resolve()
 runtime.mkdir(parents=True,exist_ok=True)
 for name in ('ipc-secret.txt','django-secret.txt'):
     path=runtime/name
     if not path.exists():
         path.write_text(secrets.token_hex(32),encoding='utf-8')
 os.environ['DJANGO_SETTINGS_MODULE']='config.ai_local'
-os.environ['LAD_AI_RUNTIME']=str(runtime)
-os.environ.pop('LAD_AI_TEST',None)
+os.environ['LAT_AI_RUNTIME']=str(runtime)
+os.environ.pop('LAT_AI_TEST',None)
 sys.path.insert(0,str(project/'backend'))
 import django
 django.setup()
@@ -42,8 +42,8 @@ catalog=[
   ('L2.accumulator.1','накопитель','Сохраняем сумму','Проследи, где создаётся s и как она меняется. Объясни роль отступа последней строки.','s = 0\nfor i in range(1, 4):\n    s = s + i\nprint(s)')])]
 contexts={};ids=[]
 with transaction.atomic():
-    User.objects.create_user('review@lad-ai.local','LadAI-Review-2026!',display_name='Взрослый оценщик')
-    course=Course.objects.create(title='Python · автопроверка LAD AI',subject='Программирование',is_published=True,description='Примеры L1/L2 с автоматическими подсказками, оценкой и прогрессом. Пилот: ИИ может ошибаться.')
+    User.objects.create_user('review@lat-ai.local','LatAI-Review-2026!',display_name='Взрослый оценщик')
+    course=Course.objects.create(title='Python · автопроверка LAT AI',subject='Программирование',is_published=True,description='Примеры L1/L2 с автоматическими подсказками, оценкой и прогрессом. Пилот: ИИ может ошибаться.')
     for order,(key,title,tasks) in enumerate(catalog,1):
         lesson=Lesson.objects.create(course=course,title=title,content=materials[key],order=order)
         contexts[f'{course.id}:{lesson.id}:0']={'lesson_key':key,'topic':tasks[0][1],'task_key':None,'digest':content_digest(course,lesson)}

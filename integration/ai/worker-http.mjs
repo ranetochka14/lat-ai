@@ -5,7 +5,7 @@ export function createWorkerServer({secret,bridge,health,control}) {
  if(typeof secret!=='string'||secret.length<32)throw Error('IPC secret required');
  const reply=(res,status,body)=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(body));};
  const server=http.createServer(async(req,res)=>{
-  const provided=Buffer.from(req.headers['x-lad-ipc']??''),expected=Buffer.from(secret);
+  const provided=Buffer.from(req.headers['x-lat-ipc']??''),expected=Buffer.from(secret);
   if(req.headers.origin)return reply(res,403,{error:'private_worker'});
   if(provided.length!==expected.length||!timingSafeEqual(provided,expected))return reply(res,401,{error:'private_worker'});
   if(req.method==='GET'&&req.url==='/health')return reply(res,200,health());

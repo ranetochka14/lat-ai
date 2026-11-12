@@ -29,10 +29,10 @@ def configure(args):
         sys.path.append(str(extra_site))
     runtime = Path(args.runtime or ROOT / '.runtime' / 'pilot').resolve()
     runtime.mkdir(parents=True, exist_ok=True)
-    os.environ.update(DJANGO_SETTINGS_MODULE='config.ai_local', LAD_AI_RUNTIME=str(runtime),
-                      LAD_AI_PORT=str(args.worker_port), LAD_FRONTEND_PORT=str(args.site_port),
+    os.environ.update(DJANGO_SETTINGS_MODULE='config.ai_local', LAT_AI_RUNTIME=str(runtime),
+                      LAT_AI_PORT=str(args.worker_port), LAT_FRONTEND_PORT=str(args.site_port),
                       PYTHONUTF8='1', PYTHONIOENCODING='utf-8', PYTHONNOUSERSITE='1')
-    os.environ.pop('LAD_AI_TEST', None)
+    os.environ.pop('LAT_AI_TEST', None)
     return runtime
 
 
@@ -44,7 +44,7 @@ def ipc(runtime, port, action=None, timeout=5):
     secret = (runtime / 'ipc-secret.txt').read_text(encoding='utf-8').strip()
     data = json.dumps({'action': action}).encode() if action else None
     req = Request(f'http://127.0.0.1:{port}/' + ('control' if action else 'health'), data=data,
-                  headers={'Content-Type': 'application/json', 'X-LAD-IPC': secret})
+                  headers={'Content-Type': 'application/json', 'X-LAT-IPC': secret})
     with build_opener(ProxyHandler({}), NoRedirect()).open(req, timeout=timeout) as response:
         return json.load(response)
 
@@ -121,7 +121,7 @@ def run(args, runtime):
             # LM Studio must already serve the existing local model files. No downloads.
             ipc(runtime, args.worker_port, 'enable', 150)
             enabled = True
-        print(f'LAD AI: http://127.0.0.1:{args.site_port}/#/documents', flush=True)
+        print(f'LAT AI: http://127.0.0.1:{args.site_port}/#/documents', flush=True)
         print(f'API: http://127.0.0.1:{args.api_port}/api/v1 | Admin: http://127.0.0.1:{args.api_port}/admin/', flush=True)
         print(f'Logs: {logdir}\nStop with Ctrl+C. Other services are never stopped.', flush=True)
         while all(p.poll() is None for p in processes.values()):
