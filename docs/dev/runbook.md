@@ -1,6 +1,6 @@
 # Запуск и проверка
 
-Установка: [README](../../README.md). Команды выполняются из корня. Используйте короткий путь и `git config core.longpaths true`: исторические fixtures имеют длинные имена.
+Установка: [README](../../README.md). Команды выполняются из корня. Используйте короткий путь и `git config core.longpaths true`: исторические тестовые данные имеют длинные имена.
 
 ## MAIN и админка
 
@@ -30,15 +30,15 @@ npm --prefix integration/ai test
 node integration/ai/check.mjs
 node --test tests/document-pilot-frontend.test.cjs
 .venv\Scripts\python.exe -B tools/pilot.py --runtime .runtime/verify prepare
-.venv\Scripts\python.exe -B tools/pilot.py --runtime .runtime/verify manage test tutor progress documents
+.venv\Scripts\python.exe -B tools/pilot.py --runtime .runtime/verify manage test tutor progress documents courses
 ```
 
-Runtime проверки отдельный: prepare создаёт секреты и синтетические данные, Django использует тестовую БД. Не подставляйте действующий runtime. check.mjs проверяет 20 SHA и схемы без модели. Для live smoke используйте синтетические `tools/demo-materials`; смысл объяснений проверяется отдельно от формата.
+Runtime проверки отдельный: prepare создаёт секреты и синтетические данные, Django использует тестовую БД. Не подставляйте действующий runtime. check.mjs проверяет 20 SHA и схемы без модели. Для проверки на живой модели используйте синтетические `tools/demo-materials`; смысл объяснений проверяется отдельно от формата.
 
 ## Восстановление
 
 БД, личные документы, secrets, логи и квитанции находятся в выбранном runtime и не входят в Git. Остановите свой MAIN через Ctrl+C; перед миграциями сделайте согласованную резервную копию БД и private-media. Старую БД поверх новой не копировать. Откат исходников и данных планируются отдельно.
 
-После сбоя сохраняйте runtime/логи. Для живого worker: `tools/pilot.py --runtime <тот-же-каталог> --worker-port <тот-же-порт> model status`; retire/enable относятся только к своему экземпляру. Не останавливайте общий LM Studio, не снимайте lock по возрасту, не присваивайте чужой instance. Unknown POST автоматически не повторяется. Документная очередь сверяется с receipt; полное Django-восстановление Python-оценки ещё открыто.
+После сбоя сохраняйте runtime/логи. Для живого worker: `tools/pilot.py --runtime <тот-же-каталог> --worker-port <тот-же-порт> model status`; retire/enable относятся только к своему экземпляру. Не останавливайте общий LM Studio, не снимайте lock по возрасту, не присваивайте чужой instance. Unknown POST автоматически не повторяется. Документная очередь сверяется с receipt; полное восстановление Python-оценки в Django пока не реализовано.
 
 Демо-пароли не подходят для интернет-развёртывания. Исходный PostgreSQL-профиль settings.py и START-FULL не являются production-конфигурацией пилота.
