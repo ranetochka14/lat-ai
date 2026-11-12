@@ -17,7 +17,7 @@ $pythonExe = if ($config -and $config.python) { $config.python } else { Join-Pat
 $runtimeDir = if ($config -and $config.runtime) { $config.runtime } else { Join-Path $root '.runtime/i02' }
 $nodeExe = if ($config -and $config.node) { $config.node } else { (Get-Command node.exe -ErrorAction Stop).Source }
 foreach ($binary in @($pythonExe, $nodeExe)) {
-    if (-not (Test-Path -LiteralPath $binary -PathType Leaf)) { throw "Runtime dependency missing: $binary. See docs/README-MAIN.txt." }
+    if (-not (Test-Path -LiteralPath $binary -PathType Leaf)) { throw "Runtime dependency missing: $binary. See docs/setup.md." }
 }
 if ($config -and $config.runtime -and -not (Test-Path -LiteralPath (Join-Path $runtimeDir 'django.sqlite3'))) {
     throw 'Configured existing database is missing. Refusing to create an empty replacement.'

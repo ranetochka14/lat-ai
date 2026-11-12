@@ -12,7 +12,7 @@
 .venv\Scripts\python.exe -B tools/pilot.py --runtime .runtime/i02 manage createsuperuser
 ```
 
-Если CheckOnly показал другую БД/Python, используйте именно их (runtime — каталог БД) и тот же `--python-extra-site`, если настроен. `CREATE_PILOT_ADMIN.cmd` относится к `.runtime/pilot`: его пользователь не появится в MAIN. Нестандартный API-порт меняет адрес admin. Не создавайте пустую БД ради восстановления входа.
+Если CheckOnly показал другую БД/Python, используйте именно их (runtime — каталог БД) и тот же `--python-extra-site`, если настроен. `scripts/legacy/CREATE_PILOT_ADMIN.cmd` относится к `.runtime/pilot`: его пользователь не появится в MAIN. Нестандартный API-порт меняет адрес admin. Не создавайте пустую БД ради восстановления входа.
 
 Другие порты:
 
@@ -41,4 +41,4 @@ Runtime проверки отдельный: prepare создаёт секрет
 
 После сбоя сохраняйте runtime/логи. Для живого worker: `tools/pilot.py --runtime <тот-же-каталог> --worker-port <тот-же-порт> model status`; retire/enable относятся только к своему экземпляру. Не останавливайте общий LM Studio, не снимайте lock по возрасту, не присваивайте чужой instance. Unknown POST автоматически не повторяется. Документная очередь сверяется с receipt; полное восстановление Python-оценки в Django пока не реализовано.
 
-Демо-пароли не подходят для интернет-развёртывания. Исходный PostgreSQL-профиль settings.py и START-FULL не являются production-конфигурацией пилота.
+Демо-пароли не подходят для интернет-развёртывания. Исходный PostgreSQL-профиль settings.py и scripts/legacy/START-FULL.cmd не являются production-конфигурацией пилота.
