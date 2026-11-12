@@ -32,6 +32,22 @@ def packet(status='ready', payload=None, error=None):
 
 
 class JobTests(StudyApiFixture, TestCase):
+    def test_explicit_count_validates_ready_and_recovered_results(self):
+        from .study_jobs import apply_reply
+
+        pack = StudyPack.objects.get(pk=self.pack['id'])
+        pack.generation_options = {'question_count': 7, 'detail': 'concise'}
+        pack.save(update_fields=['generation_options'])
+        for recovery in (False, True):
+            with self.assertRaises(InvalidStudyResult):
+                apply_reply(pack, packet(), recovery)
+        payload = result()
+        payload['questions'] = [dict(payload['questions'][0], prompt=f'Question {i}') for i in range(7)]
+        apply_reply(pack, packet(payload=payload), True)
+        pack.refresh_from_db()
+        self.assertEqual(pack.status, 'ready')
+        self.assertEqual(len(pack.result['questions']), 7)
+
     def setUp(self):
         super().setUp()
         self.document_url = BASE + str(self.upload().data['id']) + '/'

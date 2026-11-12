@@ -38,6 +38,51 @@ test('document study client preserves generation and grading request identities'
 
 
 const appSource = fs.readFileSync('assets/app.js', 'utf8');
+test('lesson submission keeps the mounted page, editor and neighboring drafts intact', async () => {
+  const feedback = {innerHTML:''};
+  let lessonReads = 0;
+  const form = fakeForm('answer');
+  form.dataset.exercise = '3'; form.dataset.maxScore = '10';
+  form.values = {answer:'My preserved answer'};
+  const app = mountApp('/lesson/1/2', {'[data-answer-result="3"]':feedback}, {
+    lessons:async()=>{lessonReads++;return [{id:2,title:'Урок',content:'Текст'}];},
+    exercises:async()=>[{id:3,title:'Задание',max_score:10}], attempts:async()=>[],
+    submitAttempt:async()=>({status:'auto_checked',score:5,feedback:'Нужно уточнить: Условие.'})
+  });
+  await turn(); const html = app.main.innerHTML;
+  await app.submit(form);
+  assert.equal(lessonReads,1); assert.equal(app.main.innerHTML,html);
+  assert.equal(form.values.answer,'My preserved answer');
+  assert.match(feedback.innerHTML,/Частично верно/); assert.match(feedback.innerHTML,/5 из 10/);
+  assert.match(app.app.innerHTML,/ИИ может ошибаться/);
+});
+
+test('history shows latest attempts first and retains earlier attempts in collapsed groups', async () => {
+  const app = mountApp('/progress',{}, {
+    attempts:async()=>[
+      {id:1,exercise:3,submitted_at:'2026-11-11T00:00:00Z',answer:'OLD_ANSWER'},
+      {id:2,exercise:3,submitted_at:'2026-11-12T00:00:00Z',answer:'LATEST_ANSWER'},
+      {id:3,exercise:4,submitted_at:'2026-11-12T01:00:00Z',answer:'OTHER_TASK'}],
+    dashboard:async()=>({courses:[],total_courses:0})
+  });
+  await turn(); const html=app.main.innerHTML;
+  assert.ok(html.indexOf('LATEST_ANSWER')<html.indexOf('OLD_ANSWER'));
+  assert.match(html,/<details class="attempt-history"><summary>Предыдущие попытки: 1/);
+  assert.equal((html.match(/OLD_ANSWER/g)||[]).length,1);
+});
+
+test('lecture typography structures prose, preserves code, and escapes untrusted markup', async () => {
+  const long='Это достаточно длинное предложение учебного материала, которое нужно прочитать внимательно. '.repeat(8);
+  const app=mountApp('/lesson/1/2',{}, {
+    lessons:async()=>[{id:2,title:'Урок',content:`# Заголовок\n\n${long}\n\n- Один\n- Два\n\n\x60\x60\x60python\nprint('<img>')\n\x60\x60\x60`}],
+    exercises:async()=>[],attempts:async()=>[]
+  });
+  await turn(); const html=app.main.innerHTML;
+  assert.match(html,/<h3>Заголовок<\/h3>/); assert.match(html,/<ul><li>Один<\/li><li>Два/);
+  assert.match(html,/<pre><code>print\(&#39;&lt;img&gt;&#39;\)/);
+  assert.doesNotMatch(html,/<img>/);
+  assert.equal((html.match(/Это достаточно/g)||[]).length,8);
+});
 const turn = () => new Promise(resolve => setImmediate(resolve));
 function mountApp(route, nodes, api, schedule = setTimeout) {
   const handlers = {};
@@ -60,7 +105,7 @@ function mountApp(route, nodes, api, schedule = setTimeout) {
     return handlers.submit({ target: { closest: selector => selector === 'form[data-form]' ? form : null }, preventDefault() {} });
   }
   const click = control => handlers.click({ target: { closest: selector => selector === '[data-action]' ? control : null }, preventDefault() {} });
-  return { main, location, submit, click };
+  return { app, main, location, submit, click };
 }
 function fakeForm(type, nodes = {}) {
   const button = { disabled: false, setAttribute() {}, removeAttribute() {} };
@@ -103,6 +148,14 @@ test('excerpt preview and retries use code points and preserve the UUID after a 
   assert.equal(calls[0].body.source_start, 5);
   assert.equal(calls[0].body.source_end, 105);
   assert.equal(calls[0].body.request_id, calls[1].body.request_id);
+  assert.equal(calls[0].body.generation_options.question_count, 6);
+  assert.equal(calls[0].body.generation_options.detail, 'concise');
+  form.values.question_count = '7';
+  form.values.detail = 'detailed';
+  await app.submit(form);
+  assert.equal(calls[2].body.generation_options.question_count, 7);
+  assert.equal(calls[2].body.generation_options.detail, 'detailed');
+  assert.notEqual(calls[2].body.request_id, calls[0].body.request_id);
   assert.equal(app.location.hash, '/study/27');
 });
 

@@ -37,6 +37,28 @@ class StudyApiFixture:
 
 
 class StudyApiTests(StudyApiFixture, TestCase):
+    def test_generation_options_validation_identity_and_dispatch(self):
+        from unittest.mock import patch
+        from .models import StudyPack
+        from .study_jobs import process_pack
+
+        url = BASE + str(self.upload().data['id']) + '/'
+        for options in (None, {}, {'question_count': True, 'detail': 'concise'},
+                        {'question_count': 8, 'detail': 'concise'},
+                        {'question_count': 6, 'detail': 'invalid'}):
+            self.assertEqual(self.generate(url, generation_options=options).status_code, 400)
+        request_id = str(uuid4())
+        options = {'question_count': 7, 'detail': 'detailed'}
+        first = self.generate(url, request_id=request_id, generation_options=options)
+        self.assertEqual(first.status_code, 202)
+        self.assertEqual(first.data['generation_options'], options)
+        self.assertEqual(self.generate(url, request_id=request_id, generation_options=options).data['id'], first.data['id'])
+        self.assertEqual(self.generate(url, request_id=request_id, generation_options={**options, 'question_count': 6}).status_code, 409)
+        pack = StudyPack.objects.get(pk=first.data['id'])
+        with patch('documents.study_jobs.call_study', return_value={'status': 'failed', 'result': None, 'error_code': 'test_only'}) as call:
+            process_pack(pack)
+            self.assertEqual(call.call_args.args[1]['generation_options'], options)
+
     def test_upload_and_owner_only_original(self):
         created = self.upload()
         self.assertEqual(created.status_code, 201)

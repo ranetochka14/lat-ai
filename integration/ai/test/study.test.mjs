@@ -16,6 +16,51 @@ import {setTimeout as delay} from 'node:timers/promises';
 const excerpt='Mercury has the shortest orbital period of any planet. Venus has a longer orbital period. Earth takes about one year to orbit the Sun.';
 const actor={actor_id:'1'};
 const request=()=>({request_id:randomUUID(),mode:'test',source_text:excerpt});
+test('generation choices bind exact question count and preserve legacy requests',()=>{
+ for(const question_count of [5,6,7]){
+  const body={...request(),generation_options:{question_count,detail:'detailed'}};
+  const config=studyGeneration(body);
+  assert.equal(config.schema.properties.questions.minItems,question_count);
+  assert.equal(config.schema.properties.questions.maxItems,question_count);
+  assert.match(config.system,new RegExp(`exactly ${question_count} distinct`));
+  assert.throws(()=>validateStudyOutput(raw(),body),/invalid study output/);
+ }
+ assert.equal(studyGeneration(request()).schema.properties.questions.maxItems,3);
+});
+
+test('generation options survive dispatch, replay and receipt fingerprinting',async t=>{
+ let seen, posts=0;
+ const bridge=journal(t,{async study(input){seen=input;posts++;return {status:'failed',result:null,error_code:'test_only'};}})();
+ const body={...request(),generation_options:{question_count:6,detail:'concise'}};
+ await bridge.study(body,actor);
+ assert.deepEqual(seen.generation_options,body.generation_options);
+ assert.equal((await bridge.study(body,actor)).body.error_code,'test_only');
+ assert.equal(posts,1);
+ for(const generation_options of [{question_count:7,detail:'concise'},{question_count:6,detail:'detailed'}]){
+  assert.equal((await bridge.study({...body,generation_options},actor)).status,409);
+  assert.equal(bridge.studyReceipt({...body,generation_options},actor).status,409);
+ }
+ for(const generation_options of [null,{}, {question_count:true,detail:'concise'},{question_count:8,detail:'concise'},{question_count:5,detail:'unsafe'}]){
+  assert.equal((await bridge.study({...request(),generation_options},actor)).status,400);
+ }
+ assert.equal(posts,1);
+});
+
+test('five to seven questions traverse Tutor with bounded generation budgets and exact-count validation',async()=>{
+ for(const count of [5,6,7]){
+  const output=example();
+  output.questions=Array.from({length:count},(_,i)=>({...output.questions[i%3],prompt:`Question ${i+1}`}));
+  let received, budget;
+  const tutor=new Tutor({experimental:true,modelEnabled:true,modelReady:true,generate:async(req,options)=>{
+   received=req;budget=options.maxTokens;return raw(output);
+  }});
+  const body={...request(),generation_options:{question_count:count,detail:'concise'}};
+  const result=await tutor.study(body);
+  assert.equal(result.status,'ready'); assert.equal(result.result.questions.length,count);
+  assert.deepEqual(received.generation_options,body.generation_options);
+  assert.equal(budget,768*(count+1)); assert.ok(budget<=6144);
+ }
+});
 const example=()=>({title:'Planetary orbits',lessons:[],questions:['Which planet orbits the quickest?','Which period is shortest?','How long is Earth’s orbit?'].map(prompt=>({
  prompt,options:['Mercury','Venus','Earth','Mars'],correct_index:0,hint:'Compare the periods.',explanation:'The shortest period means the quickest orbit.',source_quote:'Mercury has the shortest orbital period of any planet.',
  option_explanations:['The shortest period means the quickest orbit.','A longer period cannot be the shortest.','One year is longer than the stated minimum.','The excerpt does not establish this planet as quickest.']

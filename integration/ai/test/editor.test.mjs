@@ -24,3 +24,15 @@ test('newer question replaces active ID; old result cannot overwrite; response r
  assert.equal(s.accepts({request_id:b.request_id,context:{code_context:b.code_context}}),true);
  assert.equal(s.accepts({request_id:b.request_id,context:{code_context:{revision:999}}}),false);
 });
+
+test('answer style preserves source, rejects empty questions and remains fixed on retry',()=>{
+ const s=new window.LATTutor.EditorSession({course_id:1,lesson_id:2,exercise_id:3});
+ s.edit('print(3 + 2)');
+ assert.throws(()=>s.begin('explain','  ','brief'),/Напиши вопрос/);
+ assert.throws(()=>s.begin('explain','x'.repeat(2000),'brief'),/Сократи/);
+ const brief=s.begin('explain','Почему?','brief');
+ assert.equal(brief.question,'Почему?\nОтветь кратко, по сути.');
+ assert.equal(s.retry().question,brief.question);
+ assert.equal(brief.code_context.code,'print(3 + 2)');
+ assert.match(s.begin('hint','Следующий шаг?','step_by_step').question,/не раскрывая готовое решение/);
+});

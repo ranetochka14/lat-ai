@@ -94,6 +94,7 @@ def pack_data(pack, detail=True):
         'source_start': pack.source_start,
         'source_end': pack.source_end,
         'mode': pack.mode,
+        'generation_options': pack.generation_options,
         'title': result['title'] if result else pack.document.title,
         'progress': progress_for(pack, len(questions)),
     }
@@ -198,7 +199,17 @@ class DocumentDownload(PrivateStudyView):
 class GenerateStudyPack(PrivateStudyView):
     @transaction.atomic
     def post(self, request, pk):
-        body = request_body(request, ('request_id', 'mode', 'source_start', 'source_end'))
+        keys = ('request_id', 'mode', 'source_start', 'source_end')
+        if type(request.data) is dict and 'generation_options' in request.data:
+            keys += ('generation_options',)
+        body = request_body(request, keys)
+        options = body.get('generation_options', {})
+        if 'generation_options' in body and (
+            type(options) is not dict or set(options) != {'question_count', 'detail'}
+            or type(options['question_count']) is not int or options['question_count'] not in (5, 6, 7)
+            or options['detail'] not in ('concise', 'detailed')
+        ):
+            raise StudyApiError('invalid_request')
         request_id = request_uuid(body['request_id'])
         mode, start, end = body['mode'], body['source_start'], body['source_end']
         if mode not in StudyPack.Mode.values or type(start) is not int or type(end) is not int:
@@ -207,7 +218,7 @@ class GenerateStudyPack(PrivateStudyView):
         document = owner_document(request, pk)
         prior = owner_packs(request).select_related('document').filter(request_id=request_id).first()
         if prior:
-            if (prior.document_id, prior.mode, prior.source_start, prior.source_end) != (pk, mode, start, end):
+            if (prior.document_id, prior.mode, prior.source_start, prior.source_end, prior.generation_options) != (pk, mode, start, end, options):
                 raise StudyApiError('request_conflict', 409)
             return Response(pack_data(prior), status=202)
         if document.status != 'ready':
@@ -224,7 +235,7 @@ class GenerateStudyPack(PrivateStudyView):
             raise StudyApiError('queue_full', 429)
         pack = StudyPack.objects.create(
             owner=request.user, document=document, request_id=request_id, mode=mode,
-            source_start=start, source_end=end, source_text=excerpt,
+            source_start=start, source_end=end, source_text=excerpt, generation_options=options,
         )
         return Response(pack_data(pack), status=202)
 

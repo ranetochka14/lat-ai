@@ -85,5 +85,10 @@ html[data-theme="dark"] .friendly-error { background: #49382c; color: #f1d4b7; }
 html[data-theme="dark"] .friendly-layout :is(.form-error, .error-text) { color: #ffb7a9 !important; }
 html[data-theme="dark"] #toast { background: #c3e7d1; color: #14231f; }
 html[data-theme="dark"] .skip-link { background: var(--surface-raised); color: var(--ink); }
+html[data-theme="dark"] :is(.study-result-correct, .assessment-positive) { background: #263f32; border-color: #5c886c; color: #e3ede6; }
+html[data-theme="dark"] :is(.study-result-incorrect, .assessment-needs-work) { background: #422c29; border-color: #c7756a; color: #f5dfd9; }
+html[data-theme="dark"] .study-result-correct .study-result-heading > strong, html[data-theme="dark"] .assessment-positive h4 { color: #a3d5b9; }
+html[data-theme="dark"] .study-result-incorrect .study-result-heading > strong, html[data-theme="dark"] .assessment-needs-work h4 { color: #ffb7a9; }
+html[data-theme="dark"] .study-hint { background: #413653; color: #e0cdf4; border-color: #78618d; }
 html[data-theme="dark"] dialog::backdrop { background: #050d0bb3; }
 html[data-theme="dark"] .preference-toggle[aria-checked="true"] .preference-track { background: #568d70; }

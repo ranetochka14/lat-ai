@@ -64,7 +64,7 @@ def check_result(result, mode, source):
         check_quote(lesson['source_quote'], source)
 
     questions = result['questions']
-    if type(questions) is not list or not 3 <= len(questions) <= 6:
+    if type(questions) is not list or not 3 <= len(questions) <= 7:
         raise InvalidStudyResult('invalid questions')
     prompts = set()
     for question in questions:
