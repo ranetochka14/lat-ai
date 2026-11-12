@@ -8,7 +8,7 @@
 
 Запуск: START_MAIN.cmd. Проверки (155 тестов): docs/agent-handoff/RUNBOOK.md.
 
-Разработка велась с ИИ-агентами; журнал решений: docs/agent-handoff. Архив экспериментов: ветка archive.
+Разработка велась с ИИ-агентами; журнал решений: docs/agent-handoff. Архив экспериментов, отчёты и логи проверок: [ветка archive](https://github.com/ranetochka14/lat-ai/tree/archive).
 
 ## Запуск на Windows
 
@@ -25,6 +25,6 @@
 - [Решения, ограничения и следующая задача](docs/agent-handoff/README.md).
 - [Запуск, БД, админка, проверки и восстановление](docs/agent-handoff/RUNBOOK.md).
 - [Результаты проверок](docs/agent-handoff/VALIDATION.md).
-- [Подробности MAIN](README-MAIN.txt).
+- [Подробности MAIN](docs/README-MAIN.txt).
 
-`START_PILOT.cmd` использует другую БД (`.runtime/pilot`); `START_AI_REVIEW`, `START-FULL` и старые отчёты не задают текущий запуск. [Прежний README](docs/history/README-before-publication.md) сохранён только для истории.
+`START_PILOT.cmd` использует другую БД (`.runtime/pilot`); `START_AI_REVIEW`, `START-FULL` и старые отчёты не задают текущий запуск. [Прежний README](https://github.com/ranetochka14/lat-ai/tree/archive/docs/history/README-before-publication.md) сохранён только для истории в ветке archive; отчёты и логи проверок также находятся [в ветке archive](https://github.com/ranetochka14/lat-ai/tree/archive).

@@ -11,6 +11,6 @@ echo Setup complete. Start LM Studio local server, then START_MAIN.cmd.
 pause
 exit /b 0
 :failed
-echo Setup failed. See README-MAIN.txt. No model files were downloaded.
+echo Setup failed. See docs/README-MAIN.txt. No model files were downloaded.
 pause
 exit /b 1

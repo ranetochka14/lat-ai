@@ -6,6 +6,6 @@ if exist ".venv\Scripts\python.exe" (
 ) else if exist ".runtime\python\python.exe" (
   ".runtime\python\python.exe" -B tools\pilot.py --enable-model run
 ) else (
-  echo Run SETUP_PILOT.cmd first. See README-PILOT.txt.
+  echo Run SETUP_PILOT.cmd first. See docs/README-PILOT.txt.
 )
 pause

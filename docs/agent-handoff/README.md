@@ -38,3 +38,9 @@
 (перенесено в ветку archive) и (перенесено в ветку archive) — снимки, не новые журналы. Исторические пути и решения сохранены; актуальные указания выше приоритетны. В исходной среде canonical roadmap — `outputs/AI_ROADMAP.md`, единственный STATUS — в исходном shag-platform. Доступ к этим внешним каталогам не нужен для запуска приложения.
 
 research/ и snapshots перенесены в ветку archive
+
+## Где что лежит
+
+- [docs/specs](../specs/) — актуальные спецификации API, оценивания и документного пилота; V2 описывает базовый механизм, сохраняемый V3.
+- [docs/README-MAIN.txt](../README-MAIN.txt) и [docs/README-PILOT.txt](../README-PILOT.txt) — живые инструкции запуска (команды выполняются из корня репозитория).
+- [Ветка archive](https://github.com/ranetochka14/lat-ai/tree/archive) — история, планы, отчёты и логи проверок. Отличающиеся версии отчётов из main сохранены в [snapshots/main-3dacd7d/docs/ai/](https://github.com/ranetochka14/lat-ai/tree/archive/snapshots/main-3dacd7d/docs/ai/); существующие архивные версии не перезаписаны.
