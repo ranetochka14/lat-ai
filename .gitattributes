@@ -1,2 +1,7 @@
 # Preserve frozen SHA256 evidence and pinned sources across Windows checkouts.
 integration/ai/core/** -text
+
+docs/** linguist-documentation
+AGENTS.md export-ignore
+docs/agent-handoff export-ignore
+docs/agent-handoff/** export-ignore

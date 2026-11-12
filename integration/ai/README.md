@@ -1,8 +1,8 @@
 # I02 — адаптер и локальная интеграция
 
-Контракт и примеры: `../../docs/ai/TUTOR_API_V1.md`, `../../contracts/`.
+Контракт и примеры: `../../docs/specs/TUTOR_API_V1.md`, `../../contracts/`.
 
-adapter.mjs остаётся библиотекой преобразования запроса и ответа. I02.2 добавляет bridge.mjs (приватный журнал), worker-http.mjs/worker.mjs (один loopback worker), существующий Django JWT endpoint и панель редактора. См. ../../docs/ai/I02_2_RUN.md. Не использовать прежние demoEvents как историю пользователей.
+adapter.mjs остаётся библиотекой преобразования запроса и ответа. I02.2 добавляет bridge.mjs (приватный журнал), worker-http.mjs/worker.mjs (один loopback worker), существующий Django JWT endpoint и панель редактора. Историческая инструкция — [в ветке archive](https://github.com/ranetochka14/lat-ai/tree/archive/docs/ai/I02_2_RUN.md); актуальный запуск — [RUNBOOK](../../docs/agent-handoff/RUNBOOK.md). Не использовать прежние demoEvents как историю пользователей.
 
 Node22+. Runtime не имеет сторонних зависимостей. Ajv — только dev-зависимость проверки схем, версии фиксированы package-lock.
 
