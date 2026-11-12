@@ -1,6 +1,0 @@
-LAT AI — сводка последующего ручного аудита
-Только координатору. Это снимок на момент чтения, не автоматическое решение споров.
-Выдач в явном списке: 4; без зарегистрированного возврата: 1; групп карточек: 2.
-{"mode": "TECHNICAL_FIXTURE", "audit_id": "11111111111111111111111111111111", "eligible_returns": 1, "excluded_returns": 2, "missing_returns": 1, "free_fields": "not_fully_comparable", "manual_reasons": ["fewer_than_two_eligible_returns", "some_returns_excluded_by_current_status", "unreadable_reference_requires_review"]}
-{"mode": "TECHNICAL_FIXTURE", "audit_id": "22222222222222222222222222222222", "eligible_returns": 1, "excluded_returns": 2, "missing_returns": 1, "free_fields": "not_fully_comparable", "manual_reasons": ["fewer_than_two_eligible_returns", "some_returns_excluded_by_current_status", "unreadable_reference_requires_review"]}
-Все исходные решения сохранены. Совпадение полей не доказывает правильность или независимость. Первичные метки и баллы не менялись.

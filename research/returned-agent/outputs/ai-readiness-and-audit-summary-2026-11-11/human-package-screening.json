@@ -1,7 +1,0 @@
-{
-  "files_checked": 5,
-  "prohibited_local_paths_host_user_guids_pid_fields_found": false,
-  "raw_logs_store_locks_or_human_reason_values_included": false,
-  "redactions": [],
-  "transformation": "Technical demo copy adds context labels to every command; original unchanged."
-}

@@ -1,1 +1,0 @@
-Two separate model loads, 8 preselected known answers repeated3 times each in each load. Same frozen D code, rotating order.48 calls but only8 unique texts, not48 independent validation cases. Session2 records stage timings; session1 does not.

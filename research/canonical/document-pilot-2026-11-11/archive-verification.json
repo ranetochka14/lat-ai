@@ -1,9 +1,0 @@
-{
-  "archive": "LAD-AI-document-pilot-2026-11-11.zip",
-  "bytes": 3384932,
-  "sha256": "996c6e3c1052949b756b755930eb6821c8ba6aa8ef62b0a75550ef71d6d6f76f",
-  "source_files": 244,
-  "verified_entries": 245,
-  "crc_and_all_sha256": true,
-  "runtime_databases_secrets_models_included": false
-}

@@ -1,1 +1,0 @@
-96 unique cases = 16 diagnostic cases + 80 remaining cases, with the same frozen G source. One G result per case; no cherry-picking. Live logs remain in the two original run folders.

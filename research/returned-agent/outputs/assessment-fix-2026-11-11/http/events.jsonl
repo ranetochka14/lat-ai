@@ -1,8 +1,0 @@
-{"id":"original-correct","expected":100,"actual":100,"status":"auto_checked","attempt_id":3,"ms":5047.7725,"match":true}
-{"id":"if-prints-correct","expected":100,"actual":100,"status":"auto_checked","attempt_id":4,"ms":3146.9563,"match":true}
-{"id":"genuine-negation","expected":66.67,"actual":66.67,"status":"auto_checked","attempt_id":5,"ms":3087.1869000000006,"match":true}
-{"id":"output-only","expected":33.33,"actual":33.33,"status":"auto_checked","attempt_id":6,"ms":3332.7327000000005,"match":true}
-{"id":"branch-not-mentioned","expected":66.67,"actual":66.67,"status":"auto_checked","attempt_id":7,"ms":3071.4341999999997,"match":true}
-{"id":"contradiction","expected":0,"actual":0,"status":"auto_checked","attempt_id":8,"ms":3165.2645999999986,"match":true}
-{"id":"injection","expected":0,"actual":0,"status":"auto_checked","attempt_id":9,"ms":3048.1481999999996,"match":true}
-{"id":"original-correct-repeat","expected":100,"actual":100,"status":"auto_checked","attempt_id":10,"ms":3052.8894,"match":true}

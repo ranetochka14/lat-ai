@@ -1,1 +1,0 @@
-Previous H validator applied to the same fresh D model responses. Prompts and decisions are unchanged; only deterministic citation context differs. This is not a separate model run and has no standalone latency.

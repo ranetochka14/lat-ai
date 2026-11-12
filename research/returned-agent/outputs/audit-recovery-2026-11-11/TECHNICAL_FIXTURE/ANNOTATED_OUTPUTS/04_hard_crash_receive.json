@@ -1,8 +1,0 @@
-{
-  "actual_human_reviews": 0,
-  "model_calls": 0,
-  "output": "",
-  "raw_log": "04_hard_crash_receive.log",
-  "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-  "scope": "TECHNICAL_FIXTURE_ONLY_NOT_REAL_HUMAN_DATA"
-}

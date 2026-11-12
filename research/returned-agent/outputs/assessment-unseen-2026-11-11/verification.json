@@ -1,9 +1,0 @@
-{
-  "verified_utc": "2026-11-10T23:54:42.371532+00:00",
-  "frozen_labels_and_answers_unchanged": true,
-  "source_snapshot_and_original_files_unchanged": 197,
-  "both_test_instances_retired": true,
-  "stand_restored_ready_idle_without_quarantine": true,
-  "production_code_changed": false,
-  "frontend_backend_changed": false
-}

@@ -1,7 +1,0 @@
-{"at":"2026-11-11T00:07:30.773Z","event":"loaded","instance":"lat-owned-049967fd-7dfc-44b1-bc07-4f9352f3e5fb"}
-{"at":"2026-11-11T00:07:41.384Z","event":"case","id":"U02","match":true,"expected":[true,true,true],"actual":[true,true,true],"ms":10609.555400000001,"error":null}
-{"at":"2026-11-11T00:07:50.388Z","event":"case","id":"U22","match":false,"expected":[true,true,false],"actual":[false,false,false],"ms":9003.441899999998,"error":null}
-{"at":"2026-11-11T00:07:59.308Z","event":"case","id":"U26","match":true,"expected":[true,true,true],"actual":[true,true,true],"ms":8919.3276,"error":null}
-{"at":"2026-11-11T00:08:08.282Z","event":"case","id":"U46","match":false,"expected":[true,true,false],"actual":[false,false,false],"ms":8973.9415,"error":null}
-{"at":"2026-11-11T00:08:08.283Z","event":"summary","total":4,"matched":2,"failed":["U22","U46"],"max_ms":10609.555400000001}
-{"at":"2026-11-11T00:08:09.670Z","event":"retired","proven":true,"instance":"lat-owned-049967fd-7dfc-44b1-bc07-4f9352f3e5fb"}

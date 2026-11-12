@@ -1,7 +1,0 @@
-{
-  "frozen_utc": "2026-11-11T00:57:50.695697+00:00",
-  "sha256": "e7b76a978660d54f5a70b6c2abda42e62f792d64ca507e820aec55db95e36e30",
-  "cases": 32,
-  "new_vs_known128": true,
-  "protocol": "No inference until candidate selected and frozen. First pass remains primary. Author labels, same four tasks; no teacher acceptance."
-}

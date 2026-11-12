@@ -1,9 +1,0 @@
-{
-  "path": "E:\\Horror game\\LocalAI\\models\\unsloth\\Qwen3.5-9B-GGUF\\Qwen3.5-9B-Q4_K_M.gguf",
-  "bytes": 5680522464,
-  "sha256": "03B74727A860A56338E042C4420BB3F04B2FEC5734175F4CB9FA853DAF52B7E8",
-  "last_write_utc": "2026-11-03T18:35:35.0764682Z",
-  "cli_commit": "43d4b26",
-  "runtime_version": "2.68.0",
-  "runtime": "llama.cpp-win-x86_64-nvidia-cuda12-avx2"
-}

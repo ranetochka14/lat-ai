@@ -1,7 +1,0 @@
-{
-  "expected": 0,
-  "mode": "TECHNICAL_FIXTURE",
-  "returncode": 0,
-  "stderr": "",
-  "stdout": "{\"indexed_assignments\": 4, \"issued_not_in_index\": 1, \"without_registered_return\": 1, \"excluded_assignments\": 2, \"exclusions_by_reason\": {\"current_delivery_or_return_validation_errors\": 1, \"prior_exposure_history_requires_review\": 1}, \"exact_audit_case_groups\": 2}\n"
-}

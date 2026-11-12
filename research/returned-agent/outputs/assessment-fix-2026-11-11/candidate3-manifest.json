@@ -1,5 +1,0 @@
-{
-  "integration/ai/core/src/assessment.mjs": "fc5661e0c92f2aa41c4cbe393fcc9618ca9dd300ede1b325ebb2fcd8324cb9e5",
-  "integration/ai/core/data/assessment-rubrics.json": "490bc34dad31a6bf4f6430e7aa9818f2de89b98e2ea5d96a3295fecc3317bca0",
-  "integration/ai/core/src/local-model.mjs": "d56afd51e24be0a83e9253adb54cac67bbd88c9a73bd5e6c8b59b34862fe50ab"
-}

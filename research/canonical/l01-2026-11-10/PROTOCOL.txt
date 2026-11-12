@@ -1,9 +1,0 @@
-L01 protocol v1, fixed before measurements, 10 November 2026.
-Scope: existing I02.2 only, installed Qwen3.5 9B, 8192 context, single generation, 192 output tokens. No semantic acceptance claim.
-Preserve pre-existing dirty tree, core files and historical outputs. No commit/push.
-Measure full Django JWT HTTP response using two separate synthetic accounts and independent concurrent HTTP calls. No learner code execution.
-Warmup 4; steady 40 singles; 20 simultaneous pairs, alternating L1/L2 and short/near-limit code. 3 bursts of 3 requests only to exercise overflow. Source model/fallback, reason and queue/generation/validation/core total/client HTTP total recorded separately. No prompts, tokens, code or raw answers in operational logs. Synthetic test inputs saved separately as cases.json.
-Nearest-rank sample p50/p95/max are descriptive, not a population guarantee; stratify by load, source and case. Cold loads and fault injection reported separately. Successful fallback is never a successful model request. TTFT unavailable, remains null.
-Acceptance: selected supported scenario must produce model answers within core 8s and HTTP 10s. Any fallback or exceedance remains visible; do not lower criteria after seeing data. A failed scenario is excluded pending D01 rather than declared passed.
-Recovery: no retry of any durable pending after worker crash; no TTL lock deletion. Unknown dispatched generation requires terminal protocol evidence or confirmed unload of exact owned instance + absence check. Never stop shared runtime or another model. Preserve evidence before action.
-Next: baseline, cold provisioning + first and warm requests, deterministic queue/fault tests and real model abort/recovery. Implement only confirmed blocking recovery/instrumentation defects, with RED/GREEN tests. Review, update canonical roadmap and sole STATUS, retain all logs.

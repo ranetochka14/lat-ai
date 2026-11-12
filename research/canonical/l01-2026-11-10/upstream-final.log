@@ -1,5 +1,0 @@
-
-> lat-ai-tutor-contract@0.1.0 check
-> node check.mjs
-
-{"schemas":3,"request_examples":2,"response_examples":6,"pinned_core_files":20,"synthetic_generator_calls":2,"live_model_calls":0,"django_executed":false}

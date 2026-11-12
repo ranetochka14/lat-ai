@@ -1,7 +1,0 @@
-{
-  "status": "frozen_not_run",
-  "model_assessments": 0,
-  "planned_assessments": 384,
-  "reason": "Unexpected SDK disposal failure in separate checkpoint experiment. Live work stopped for runtime review per owner instruction; all unaffected offline work completed. v2 itself uses CLI, not this SDK; this is a deliberate stage stop, not a claimed technical impossibility.",
-  "plan_sha256": "af000b4c20771026f144bad4ac5aeb7d84eebb2d7741ac8266cfa1d69f72bcf2"
-}

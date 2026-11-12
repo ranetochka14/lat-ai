@@ -1,5 +1,0 @@
-{
-  "model_key": "qwen3.5-9b",
-  "environment_note": "Existing local RTX2050 4GB PC; local60s budget, sequential calls. No project-wide limit changes.",
-  "model_identity_note": "Existing LM Studio qwen3.5-9b model, no weights downloaded/changed; model key declaration, not independently hashed weights."
-}

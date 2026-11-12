@@ -18,7 +18,7 @@
 Из корня репозитория, подставив путь к нему:
 
 ```powershell
-node tools/evaluate-assessment.mjs 'E:/Startup Tau/lat-ai' integration/ai/eval/assessment-dev48.json 'E:/Startup Tau/outputs/assessment-new-run'
+node tools/evaluate-assessment.mjs '<путь к репозиторию>' integration/ai/eval/assessment-dev48.json '<путь к репозиторию>'
 ```
 
 Скрипт создаёт свой уникальный экземпляр, вызывает ту же `LocalModel.generate` и `validateAssessment`, сохраняет каждый raw, ожидаемые/полученные критерии, длительность, `events.jsonl`, `recovery.jsonl` и `summary.json`. В конце выгружает только свой экземпляр с подтверждением. Таймаут 60 секунд — бюджет измерительного инструмента, а не изменение общих лимитов продукта. После неизвестного завершения запроса нельзя повторять POST или удалять lock по возрасту.

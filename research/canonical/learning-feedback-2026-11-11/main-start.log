@@ -1,5 +1,0 @@
-Existing isolated AI data retained. No course/account overwrites.
-LAD AI: http://127.0.0.1:5173/#/documents
-API: http://127.0.0.1:8000/api/v1 | Admin: http://127.0.0.1:8000/admin/
-Logs: C:\Users\ASUS ROG STRIX\Documents\Codex\2026-11-08\shag-model-selection\work\tf11kit\app\.runtime\i02\logs\20261111-235045
-Stop with Ctrl+C. Other services are never stopped.

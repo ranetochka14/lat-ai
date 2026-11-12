@@ -1,9 +1,0 @@
-{
-  "recorded_utc": "2026-11-11T05:43:26.692105+00:00",
-  "chat": "https://claude.ai/chat/bf69c588-0773-495f-8cbe-6167148049f6",
-  "stage_messages_sent": 2,
-  "completed_responses_read": 2,
-  "verification": "Claude native AX user messages + Message10 and12 completed responses. Actual response text read; no screenshot proof claimed.",
-  "notes_sha256": "803d3ff954c512181fe3f542c53faa37e59f6f1cb472501fac1cc077485eeab7",
-  "scope": "Review of descriptions/text examples, not code audit. No blocking comments on second review; style suggestions retained."
-}

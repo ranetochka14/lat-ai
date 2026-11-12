@@ -1,9 +1,0 @@
-✔ readiness failure after owned load retains recovery handle and visible quarantine for operator retire (9.6243ms)
-ℹ tests 1
-ℹ suites 0
-ℹ pass 1
-ℹ fail 0
-ℹ cancelled 0
-ℹ skipped 0
-ℹ todo 0
-ℹ duration_ms 111.2134

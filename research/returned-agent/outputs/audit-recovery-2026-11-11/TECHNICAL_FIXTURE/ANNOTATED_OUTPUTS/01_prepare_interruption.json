@@ -1,8 +1,0 @@
-{
-  "actual_human_reviews": 0,
-  "model_calls": 0,
-  "output": "TECHNICAL_FIXTURE crash after assignment manifest before issue marker\n",
-  "raw_log": "01_prepare_interruption.log",
-  "raw_sha256": "4d6648df45f1b4dc8077ff5e85f0e068d77bbb23a6fdd9934a935cbc28cf6806",
-  "scope": "TECHNICAL_FIXTURE_ONLY_NOT_REAL_HUMAN_DATA"
-}

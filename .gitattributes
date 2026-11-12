@@ -1,4 +1,2 @@
 # Preserve frozen SHA256 evidence and pinned sources across Windows checkouts.
-research/** -text
-docs/agent-handoff/snapshots/** -text
 integration/ai/core/** -text

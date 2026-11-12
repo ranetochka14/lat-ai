@@ -1,8 +1,0 @@
-{
-  "created_before_presentation_change": true,
-  "cases": 81,
-  "holdout": false,
-  "inputs_sha256": "dfa36ea0bf76866630cea5793502b2b04fd1cd1c82a790f90b37b65dcfc4c23c",
-  "plan_sha256": "baa448b63793dc9f06c5bd26deddb3dde2d64a8d553a077fab9dda529bbe7e00",
-  "trace_comparison_sha256": "a6657ba9b5e4d2c33a46e103141010ea9349c7b062447f5b7678dd9a34150ab7"
-}

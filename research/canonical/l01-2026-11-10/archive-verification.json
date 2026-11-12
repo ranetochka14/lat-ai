@@ -1,8 +1,0 @@
-{
-  "archive": "LAD-AI-L01-2026-11-10.zip",
-  "entries": 65,
-  "bytes": 148409,
-  "sha256": "5664cb2c58f8640dfb8b84a2e46077bc1f287bf94aa1729a5716a376686af550",
-  "all_entry_hashes_verified": true,
-  "runtime_databases_secrets_weights_included": false
-}

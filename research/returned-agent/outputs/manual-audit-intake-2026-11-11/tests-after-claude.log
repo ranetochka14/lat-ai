@@ -1,7 +1,0 @@
-E:\Startup Tau\tools\test-receive-review-cards.py:94: SyntaxWarning: invalid escape sequence '\u'
-  for data in [b'{"cards":9007199254740992}',b'{"cards":1e999}',b'{"cards":"\uD800"}']:
-................
-----------------------------------------------------------------------
-Ran 16 tests in 0.735s
-
-OK

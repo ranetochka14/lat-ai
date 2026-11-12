@@ -1,5 +1,0 @@
-import fs from 'node:fs';
-const module=fs.readFileSync(new URL('presentation.mjs',import.meta.url),'utf8').replace(/export /g,'');
-const data=[{id:'scope',kind:'catalogue_scope',scope:'lesson_coverage_not_student_mastery',text:'Справка <img src=x onerror="alert(1)"> сохранена как текст.'},{id:'program',kind:'computed_program',scope:'provided_code_only',text:'Вычисленный факт <script>alert(2)</script>',provenance:{method:'closed_integer_analyzer'}},{id:'limit',kind:'computed_trace',scope:'provided_code_only',text:'Показано 2/10. Пропущено событий: 8.'}];
-const encoded=JSON.stringify(data).replace(/</g,'\\u003c');
-fs.writeFileSync(new URL('SMOKE.html',import.meta.url),`<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Проверка буквального текста</title><style>li{white-space:pre-wrap;overflow-wrap:anywhere}summary{padding:12px}summary:focus-visible{outline:3px solid blue}</style><h1>Проверка буквального текста</h1><div id="facts"></div><script type="module">${module}\nconst facts=${encoded};renderFacts(document.getElementById('facts'),facts,{role:'explain'});</script></html>`);

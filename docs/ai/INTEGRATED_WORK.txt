@@ -2,8 +2,8 @@ MAIN01 — карта принятой работы
 
 ПЕРЕНОСИМАЯ ПЕРЕДАЧА 12.11.2026: текущая точка — docs/agent-handoff/README.md,
 запуск/БД — docs/agent-handoff/RUNBOOK.md, проверки — docs/agent-handoff/VALIDATION.md.
-Исследовательские инструменты и отобранные результаты включены в research/;
-индекс происхождения/SHA — docs/agent-handoff/PROVENANCE.json.
+Исследовательские инструменты и отобранные результаты включены в (перенесено в ветку archive);
+индекс происхождения/SHA — (перенесено в ветку archive).
 Ниже сохранена историческая карта: абсолютные пути не требуются для нового клона.
 
 Основной source: shag-model-selection/work/lat-ai. Объединяет прежние191 исходников, принятые209 от другого агента и244 DOC01. Конфликтующих новых локальных правок при сверке не обнаружено. Дополнения MAIN: единая точка запуска с явным runtime, инструкция, этот индекс. Учебный пакет61 пока отложен.
@@ -16,7 +16,7 @@ MAIN01 — карта принятой работы
 Последующие DOC01 сохранены: documents private storage/jobs/attempts, общий inference slot, проверка автоматической оценки для hint context, frontend, упаковка.
 
 Полная инженерная передача сохранена отдельно, чтобы не смешивать production source с замороженными экспериментами:
-C:/Users/ASUS ROG STRIX/Documents/Codex/lat-return-1111/workspace
+<путь к репозиторию>
   tools/ — все полученные исследовательские и offline-инструменты;
   outputs/ — 21 раздел результатов, исходные отрицательные прогоны, raw и frozen наборы;
   work/ — снимки экспериментов и среды, не активный runtime;
@@ -34,8 +34,8 @@ C:/Users/ASUS ROG STRIX/Documents/Codex/lat-return-1111/workspace
 Известные метрики остаются в исходных отчётах, новых независимых данных этот перенос не создаёт.
 
 Canonical:
-C:/Users/ASUS ROG STRIX/Documents/Codex/2026-11-08/shag-model-selection/outputs/AI_ROADMAP.md
+<путь к репозиторию>
 Единственный STATUS:
-C:/Users/ASUS ROG STRIX/Documents/Codex/2026-11-05/new-chat/outputs/shag-platform/STATUS.md
+<путь к репозиторию>
 Текущий перенос и откат:
 canonical outputs/main-integration-2026-11-11 (PLAN, REPORT, source backup, promotion manifest, migration/test/live evidence).

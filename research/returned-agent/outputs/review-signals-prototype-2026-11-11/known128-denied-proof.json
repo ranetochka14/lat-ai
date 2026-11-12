@@ -1,7 +1,0 @@
-{
-  "expected_rejection": true,
-  "exit_code": 1,
-  "no_output_created": true,
-  "no_inference": true,
-  "reason": "real_student pilot required; synthetic known128 cannot be used for quality evaluation"
-}

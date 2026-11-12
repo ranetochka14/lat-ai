@@ -1,1 +1,0 @@
-Comparison-only union of earlier evidence-v1 runs: original dev48 from assessment-fix/candidate4; new U48 from assessment-unseen/first-pass. No new inference. Not a contemporaneous controlled timing baseline. Original logs retained in their source directories.

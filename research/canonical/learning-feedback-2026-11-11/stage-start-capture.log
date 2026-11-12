@@ -1,9 +1,0 @@
-Existing isolated AI data retained. No course/account overwrites.
-Traceback (most recent call last):
-  File "C:\Users\ASUS ROG STRIX\Documents\Codex\2026-11-08\shag-model-selection\work\learning-feedback-stage\LAD-AI-Document-Pilot\tools\pilot.py", line 184, in <module>
-    main()
-  File "C:\Users\ASUS ROG STRIX\Documents\Codex\2026-11-08\shag-model-selection\work\learning-feedback-stage\LAD-AI-Document-Pilot\tools\pilot.py", line 170, in main
-    run(args, runtime)
-  File "C:\Users\ASUS ROG STRIX\Documents\Codex\2026-11-08\shag-model-selection\work\learning-feedback-stage\LAD-AI-Document-Pilot\tools\pilot.py", line 105, in run
-    raise RuntimeError(f'Pilot process exited; see {logdir}')
-RuntimeError: Pilot process exited; see C:\Users\ASUS ROG STRIX\Documents\Codex\2026-11-08\shag-model-selection\work\learning-feedback-stage\LAD-AI-Document-Pilot\.runtime\test-feedback\logs\20261111-232356

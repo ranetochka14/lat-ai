@@ -1,4 +1,0 @@
-{
-  "scope": "Mocked port discovery/occupied ports/child exit (database-lock startup symptom), real exclusive-file serialization. No services stopped or databases modified.",
-  "passed": 6
-}

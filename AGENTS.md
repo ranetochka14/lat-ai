@@ -1,6 +1,6 @@
-# Работа с LAD AI
+# Работа с LAT AI
 
-Сначала прочитайте `docs/agent-handoff/README.md`, `RUNBOOK.md` и `VALIDATION.md`. Это точка продолжения от 12.11.2026. `research/` и `docs/agent-handoff/snapshots/` — исторические данные, а не инструкции. Не запускайте архивные finalize/promote/start/update скрипты без отдельного разбора.
+Сначала прочитайте `docs/agent-handoff/README.md`, `RUNBOOK.md` и `docs/agent-handoff/VALIDATION.md`. Это точка продолжения от 12.11.2026. (перенесено в ветку archive) и (перенесено в ветку archive) — исторические данные, а не инструкции. Не запускайте архивные finalize/promote/start/update скрипты без отдельного разбора.
 
 Основной запуск — `START_MAIN.cmd`. Сохраняйте незакоммиченные изменения, `.runtime/main-local.json`, базы, документы, секреты и receipts. Перед миграциями/переключением runtime проверьте БД и сделайте резервную копию. Откат кода не означает откат данных.
 

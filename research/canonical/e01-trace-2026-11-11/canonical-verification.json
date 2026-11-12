@@ -1,9 +1,0 @@
-{
-  "passed": true,
-  "roadmap_sha256": "f20ca90b8a6b2f30685ff3c6d7f4f36e3cabe4c21617bde1bc7dbf7e8ce92121",
-  "status_sha256": "b0af77e578c00cc7731ef9df9e3e52e15b88732d116fb9a02a6bebd83e77121a",
-  "backups_preserved": true,
-  "live_source_files_unchanged": 176,
-  "review_ids": "R-093..R-097",
-  "journal": "LOG-0039"
-}

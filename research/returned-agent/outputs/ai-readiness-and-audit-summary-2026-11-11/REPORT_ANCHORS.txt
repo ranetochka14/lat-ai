@@ -1,6 +1,0 @@
-LAT AI · корневые SHA256
-summary-protocol.json  f78775686b25592da5cd0bd86a5fa6609742bdfd974ad15dc6764eb2b681bbbb
-readiness-protocol.json  0307471c1897dd581aaa5908f8c6f0c53edf748d88071e1715453a2522c6e3fd
-TECHNICAL_FIXTURE/SUMMARY_AFTER/MANIFEST.json  e0ee51be7763f0c8fd6f7225c1dd7aaa0bd0a199aae1ec341e14df9b46db0a8a
-READINESS.json  8fd45f01830503457750b50ccac0c115a3541ad9b84aacb21b7896de478de4aa
-Хранить отдельно от ZIP; SHA не доказывают подлинность.

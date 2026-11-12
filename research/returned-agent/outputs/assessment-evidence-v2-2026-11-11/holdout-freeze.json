@@ -1,8 +1,0 @@
-{
-  "frozen_utc": "2026-11-11T00:00:45.772081+00:00",
-  "sha256": "75c601d9f0048765018036f65012e771acd958206cc93a0b7337b4fb89a8773a",
-  "cases": 32,
-  "new_vs_regression96": true,
-  "evidence_oracle": "Each positive quote must contain all predeclared exact anchors for that criterion, plus author audit for semantic adequacy. This is a controlled text coverage check, not a universal entailment test.",
-  "protocol": "No inference on these cases until candidate choice is recorded. Single first pass; never tune to its failures and call it unseen. Author labels, same known four tasks; no teacher validation."
-}

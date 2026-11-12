@@ -1,4 +1,0 @@
-{
-  "passed": 2,
-  "scope": "Two known synthetic live smoke cases, not unseen validation; AI worker only, no Django writes."
-}

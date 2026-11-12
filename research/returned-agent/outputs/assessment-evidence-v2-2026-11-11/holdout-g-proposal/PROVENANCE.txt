@@ -1,1 +1,0 @@
-Extracted from the fresh live H run. The verification stage uses frozen evidence-v1 source/prompt/rubrics, original answer only, without the proposal. It is not a separate randomized baseline run. Stage timing was not recorded.

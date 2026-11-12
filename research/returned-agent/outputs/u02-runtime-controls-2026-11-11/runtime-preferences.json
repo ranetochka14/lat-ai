@@ -1,8 +1,0 @@
-{
-  "formatDefaults": {
-    "gguf": "llama.cpp-win-x86_64-nvidia-cuda12-avx2"
-  },
-  "versions": {
-    "llama.cpp-win-x86_64-nvidia-cuda12-avx2": "2.68.0"
-  }
-}

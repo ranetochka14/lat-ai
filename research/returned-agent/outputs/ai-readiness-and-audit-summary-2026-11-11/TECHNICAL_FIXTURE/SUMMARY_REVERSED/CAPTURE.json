@@ -1,7 +1,0 @@
-{
-  "capture_completed_utc": "2026-11-11T07:50:30.688204+00:00",
-  "mode": "TECHNICAL_FIXTURE",
-  "note": "Read snapshot, not a live authorization. Verify MANIFEST before use.",
-  "raw_index_sha256": "860b61e332009db54147a3252f2a9980f0730a64e93974e8f3eadfa4d9f5a909",
-  "summary_sha256": "ca01831b04e5a2a9edd6ccd1f81bd2bd3064c3c4a119408ea2f6120d1c5cc51c"
-}

@@ -1,7 +1,0 @@
-GPU: NVIDIA GeForce RTX2050,4096MiB,driver591.86
-lms CLI commit:43d4b26
-Node:24.11.1
-Model:qwen3.5-9b,context8192,parallel1
-Assessment:temperature0,max_tokens192 per call,reasoning disabled
-Local model queue budget60000ms;Django70000ms;browser80000ms
-General defaults unchanged8/9/10s

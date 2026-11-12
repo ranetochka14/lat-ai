@@ -1,4 +1,0 @@
-  File "E:\Startup Tau\tools\package-sdk-history-stage.py", line 31
-    delta={'baseline':'outputs/u02-runtime-controls-2026-11-11/backup/source-and-evidence-manifest.json','added':sorted(set(tool_after)-set(tool_before)),'removed':sorted(set(tool_before)-set(tool_after)),'modified':{n:{'before':tool_before[n],'after':tool_after[n]} for n in sorted(set(tool_before)&set(tool_after)) if tool_before[n]!=tool_after[n]}
-          ^
-SyntaxError: '{' was never closed

@@ -1,7 +1,0 @@
-{
-  "retrieved_utc": "2026-11-11T08:46:06.6410183Z",
-  "commit": "138dcffbc40e5fe3d9c0d38cf75dcdc1d883d849",
-  "url": "https://raw.githubusercontent.com/lmstudio-ai/lms/138dcffbc40e5fe3d9c0d38cf75dcdc1d883d849/src/subcommands/daemon/up.ts",
-  "sha256": "f06dff98819d7302a2a439fca6224281d0d2d5228f8283a1c2453b6b1fd1e79a",
-  "installed_build_equivalence_verified": false
-}

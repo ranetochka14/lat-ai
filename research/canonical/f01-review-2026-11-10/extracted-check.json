@@ -1,1 +1,0 @@
-{"passed": true, "manifest_files": 43, "responses": 381, "adjudications": 11, "frozen_sources": 9, "read_only": true, "scope": "checks shipped artifacts and score arithmetic; does not validate semantic ratings or external original workspace"}

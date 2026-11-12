@@ -1,9 +1,0 @@
-{
-  "checks": 43,
-  "all_passed": true,
-  "auto_checked": 4,
-  "assessment_count": 4,
-  "synthetic_user": "main-smoke-caec6b6b@lad-ai.local",
-  "document_pack": 1,
-  "note": "Synthetic integration checks, not accuracy evaluation; no hidden failed repetitions"
-}

@@ -54,4 +54,3 @@ Desktop.ini
 *.7z
 
 # Reviewed synthetic historical evidence is intentionally versioned.
-!research/**/*.log

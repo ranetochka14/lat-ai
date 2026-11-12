@@ -1,7 +1,0 @@
-{
-  "expected": 3,
-  "mode": "TECHNICAL_FIXTURE",
-  "returncode": 3,
-  "stderr": "",
-  "stdout": "{\"current_snapshot_matches\": false, \"status\": \"stale_snapshot_generate_new_export\", \"automatic_update\": false, \"mode\": \"TECHNICAL_FIXTURE\"}\n"
-}

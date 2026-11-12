@@ -1,7 +1,0 @@
-{
-  "path": "E:\\Horror game\\LocalAI\\models\\unsloth\\Qwen3.5-9B-GGUF\\Qwen3.5-9B-Q4_K_M.gguf",
-  "bytes": 5680522464,
-  "sha256": "03b74727a860a56338e042c4420bb3f04b2fec5734175f4cb9fa853daf52b7e8",
-  "measured_utc": "2026-11-11T02:44:11.105Z",
-  "note": "Separate read-only audit after abnormal exit, NOT the missing in-process post-run fingerprint."
-}

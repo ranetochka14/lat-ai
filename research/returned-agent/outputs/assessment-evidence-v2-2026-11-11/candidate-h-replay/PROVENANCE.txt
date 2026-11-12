@@ -1,1 +1,0 @@
-Offline validation of the agreement gate using recorded G proposal and recorded evidence-v1 response for the same case. This is not a fresh live evaluation of H. No H latency is inferred. New holdout32 will execute both prompts live.

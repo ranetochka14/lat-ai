@@ -1,8 +1,0 @@
-{
-  "actual_human_reviews": 0,
-  "model_calls": 0,
-  "output": "Traceback (most recent call last):\n  File \"E:\\Startup Tau\\tools\\receive-review-cards.py\", line 268, in <module>\n    result=freeze(args.new_protocol) if args.mode=='freeze' else prepare(args.protocol,args.rendered,args.reviewer_uuid,args.store,args.new_assignment) if args.mode=='prepare' else receive(args.protocol,args.assignment,args.returned,args.delivery,args.store)\n                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\Startup Tau\\tools\\receive-review-cards.py\", line 142, in prepare\n    with store_reservation(store) as root:\n         ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\Startup Tau\\work\\runtime\\python-env\\Lib\\contextlib.py\", line 137, in __enter__\n    return next(self.gen)\n           ^^^^^^^^^^^^^^\n  File \"E:\\Startup Tau\\tools\\receive-review-cards.py\", line 116, in store_reservation\n    with lock.open('x',encoding='ascii') as f:f.write(token)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"E:\\Startup Tau\\work\\runtime\\python-env\\Lib\\pathlib.py\", line 1013, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileExistsError: [Errno 17] File exists: 'E:\\\\Startup Tau\\\\outputs\\\\audit-recovery-2026-11-11\\\\TECHNICAL_FIXTURE\\\\FIXTURE_STORE\\\\intake.lock'\n",
-  "raw_log": "14_legacy_prepare_blocked.log",
-  "raw_sha256": "73279e25015bfb9c18ccc9b9449a2673a21d39fff2b0f76ef403c8c5eb64c517",
-  "scope": "TECHNICAL_FIXTURE_ONLY_NOT_REAL_HUMAN_DATA"
-}

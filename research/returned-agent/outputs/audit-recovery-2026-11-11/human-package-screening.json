@@ -1,9 +1,0 @@
-{
-  "actual_local_user_host_paths_or_GUIDs_found": false,
-  "files_checked": 11,
-  "prohibited_structured_seed_map_exposure_fields_found": false,
-  "protocol_sha256": "4ebe208d20ec35f7482caaf51c6d10308111ccf02d247b125ca1eee79aa3e909",
-  "raw_logs_store_locks_included": false,
-  "rules_and_historical_dataset_hashes_are_not_seed_or_exposure_material": "Six coordinator pilot documents inspected; no actual assignment/private map included.",
-  "source_documents_not_redacted": true
-}

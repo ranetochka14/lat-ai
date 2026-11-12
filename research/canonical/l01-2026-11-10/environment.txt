@@ -1,5 +1,0 @@
-Node v24.11.1
-LM Studio CLI commit 69d945a
-GPU NVIDIA GeForce RTX 5060 Laptop GPU; 8151 MiB; driver 617.42
-Observed after final run: 60 C; 8.47 W; not a thermal time series
-Qwen3.5-9B-Q4_K_M.gguf; context8192; parallel1; output cap192

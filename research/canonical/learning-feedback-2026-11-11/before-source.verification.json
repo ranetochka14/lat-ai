@@ -1,9 +1,0 @@
-{
-  "archive": "before-source.zip",
-  "bytes": 3391148,
-  "sha256": "b79a5c63f0fa23f3f867ae08014a9f43d5d704ab70e34e1a3d960790b0b399ed",
-  "source_files": 248,
-  "verified_entries": 249,
-  "crc_and_all_sha256": true,
-  "runtime_databases_secrets_models_included": false
-}

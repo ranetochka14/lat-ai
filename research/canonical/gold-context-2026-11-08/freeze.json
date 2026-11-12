@@ -1,7 +1,0 @@
-{
-  "frozen_utc": "2026-11-08T19:00:29.855Z",
-  "prompt_sha256": "d07f9f57b59bc1eea81160b2b2aa2e15884e14d5b7d502295975e4265c1220f9",
-  "suite_sha256": "48ff2f0aade892eeb79ccd1b0d64cced6c0fa52d933e9fb036818b6eee001bee",
-  "adjudication_sha256": "05d9d0d2c4005ad29d3f3fe3ee6fe98a692f93bb559c74173a0e0cb1d716a3df",
-  "reason": "One common prompt revision completed on dev; persistent failures. Fixed v2 used for both models, no claim of optimal prompt. No holdout generations yet."
-}

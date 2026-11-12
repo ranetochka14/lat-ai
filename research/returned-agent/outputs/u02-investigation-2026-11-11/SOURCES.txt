@@ -1,6 +1,0 @@
-Primary local evidence: historical SHA-verified source snapshot,6 historical raw U02,3 recent raw U02,12 new raw U02 with full request/response bodies; frozen protocols and model metadata.
-Official documentation consulted for load parameters and CLI, not as proof of the internal cause:
-LM Studio Load a model — https://lmstudio.ai/docs/developer/rest/load
-LM Studio lms load — https://lmstudio.ai/docs/cli/local-models/load
-Actual config fields are captured from the installed runtime; documentation does not establish cache as the cause.
-Server log for2026-11-11 was zero bytes; no historical server trace was invented.

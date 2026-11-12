@@ -1,7 +1,0 @@
-{
-  "exec_session_id": 57196,
-  "wrapper": "tools/run-known128-history-scan.mjs",
-  "stdout": "outputs/sdk-fix-and-history-scan-2026-11-11/known128-live.log",
-  "plan": "outputs/u02-runtime-controls-2026-11-11/known128-plan.json",
-  "note": "Launch metadata only. Completion must be read from terminal tool result and per-series summaries."
-}
