@@ -219,12 +219,14 @@
       </div>
     </section>`;
   }
+  const aiMessages = {ready:'ИИ готов к генерации.',loading:'Модель загружается. Нажми «Проверить готовность ИИ» после загрузки.',disabled:'Модель выключена. Запусти платформу с включённым ИИ.',cold:'Модель ещё не готова. Нажми «Проверить готовность ИИ» после загрузки.',busy:'ИИ занят другим запросом. Дождись завершения и проверь готовность ИИ.',quarantined:'Нужно проверить завершение предыдущего запроса. Обратись к владельцу стенда.',unavailable:'Нет связи с локальным ИИ. Проверь запуск платформы.'};
   async function documentPage(id) {
     if (!user) return { content: requireLogin('Мои документы') };
     const doc = await api().documentDetail(id);
     const source = doc.extracted_text || '';
     const length = Array.from(source).length;
     const canGenerate = doc.status === 'ready' && length >= 100;
+    const aiState = canGenerate && api().tutorStatus ? await api().tutorStatus().catch(() => ({state:'unavailable',can_generate:false})) : null;
     const content = `<section class="container section study-page">
       <a class="back-link" href="#/documents">← Мои документы</a>
       ${pageHead('ИСХОДНЫЙ ДОКУМЕНТ', escape(doc.title), doc.status === 'ready' ? `${format(length)} символов извлечённого текста` : '')}
@@ -251,7 +253,8 @@
         <div class="study-range"><label>Количество вопросов<select name="question_count">${[5,6,7].map(n => `<option value="${n}" ${learningPreferences().question_count===n?'selected':''}>${n} вопросов</option>`).join('')}</select></label><label>Материал и объяснения<select name="detail"><option value="concise" ${learningPreferences().detail==='concise'?'selected':''}>Кратко</option><option value="detailed" ${learningPreferences().detail==='detailed'?'selected':''}>Подробнее</option></select></label></div>
         <p class="small-note">Для всего выбранного фрагмента. Больше вопросов — дольше создание. Если в тексте недостаточно фактов, проверка может отклонить материал.</p>
         <p class="form-error" role="alert"></p>
-        <button class="button primary" type="submit">Создать ${icon('spark')}</button>
+        ${aiState ? `<p class="subtle" role="status" data-ai-status>${escape(aiMessages[aiState.state] || aiMessages.unavailable)}</p><button class="button secondary compact" data-action="refresh-ai-status" type="button">Проверить готовность ИИ</button>` : ''}
+        <button class="button primary" type="submit" ${aiState && !aiState.can_generate ? 'disabled' : ''}>Создать ${icon('spark')}</button>
       </form>` : doc.status === 'ready' ? '<p class="panel study-block">Для создания мини-курса или теста нужен текст длиной от 100 символов.</p>' : ''}
     </section>`;
     return { content, source };
@@ -351,6 +354,7 @@
       return `${header}<div class="panel study-block" role="status">
         ${studyBadge(pack)}<p>${escape(messages[pack.status] || '')}</p>
         ${pack.status === 'failed' || pack.status === 'unknown' ? `<p class="subtle">${escape(studyIssue(pack.error_code))}</p>` : ''}
+        ${pack.status === 'failed' && Number.isInteger(pack.document_id) ? `<a class="button secondary" href="#/documents/${pack.document_id}">Вернуться к документу</a>` : ''}
       </div>`;
     }
     const lessons = pack.lessons.map(lesson => `<article class="panel study-block">
@@ -446,12 +450,18 @@
     disabled: 'Локальная модель не включена. Для генерации обратитесь к владельцу стенда.',
     cold: 'Локальная модель ещё не готова. Дождитесь запуска владельцем стенда.',
     invalid_result: 'Ответ модели не прошёл проверку формата и цитат.',
+    invalid_output: 'ИИ не смог подготовить проверенный материал. Попробуй выбрать более содержательный фрагмент или меньше вопросов.',
+    quarantined: 'Предыдущий запрос к ИИ не завершён. Обратись к владельцу стенда для проверки и восстановления.',
+    timeout: 'ИИ не уложился во время. Не отправляй запрос повторно, пока владелец стенда не проверит завершение.',
+    transport: 'Связь с ИИ прервалась. Результат требует проверки владельцем стенда.',
+    queue_budget: 'Не хватило времени на ожидание в очереди. Дождись завершения других запросов.',
+    retired: 'Экземпляр модели остановлен. Владелец стенда может включить модель снова.',
     worker_unreachable: 'Сервер не получил подтверждение от локального ИИ.',
     receipt_missing: 'Сервер не нашёл сохранённый результат.',
     generation_unknown: 'Сервер ещё не подтвердил результат.'
   };
   const documentIssue = code => issueMessages[code] || 'Не удалось извлечь текст из файла.';
-  const studyIssue = code => issueMessages[code] || '';
+  const studyIssue = code => issueMessages[code] || 'Не удалось подтвердить готовность материала. Сохранённый статус поможет владельцу стенда проверить причину.';
   const mutationMessage = error => issueMessages[error.details?.error] || error.message;
   const pendingStudyRequests = new Map();
   function requestIdentity(key) {
@@ -490,6 +500,21 @@
     }
     identity.finish();
     if (form.isConnected) location.hash = studyLink(pack).slice(1);
+  }
+  async function refreshGenerationStatus(control) {
+    const form = control.form;
+    const button = $('[type="submit"]', form);
+    const output = $('[data-ai-status]', form);
+    control.disabled = true;
+    button.disabled = true;
+    try {
+      const state = await api().tutorStatus();
+      if (!form.isConnected) return;
+      output.textContent = aiMessages[state.state] || aiMessages.unavailable;
+      button.disabled = state.can_generate !== true;
+    } catch {
+      if (form.isConnected) output.textContent = aiMessages.unavailable;
+    } finally { if (form.isConnected) control.disabled = false; }
   }
   async function fetchStudyHint(control) {
     const form = control.form;
@@ -630,6 +655,7 @@
     else if(action==='home-upload'){if(!user)authModal();else $('#home-upload').click();}
     else if(action==='retry')render();
     else if(action==='use-excerpt-selection')useExcerptSelection(control);
+    else if(action==='refresh-ai-status')await refreshGenerationStatus(control);
     else if(action==='study-hint')await fetchStudyHint(control);
     else if(action==='dashboard')location.hash='/dashboard';
     else if(action==='menu'){ const expanded=control.getAttribute('aria-expanded')==='true'; control.setAttribute('aria-expanded',String(!expanded)); $('.friendly-sidebar').classList.toggle('is-open',!expanded); }

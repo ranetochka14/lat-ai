@@ -188,3 +188,28 @@ test('partial elimination rejects correct-label leakage, quote-only, generic or 
  value.questions[0].option_explanations[3]='This choice assumes the later stage, while the question concerns the earlier stage.';
  assert.match(studySchema.studyEliminationHints(value)[0],/«D»/);
 });
+
+test('both verification stages accept every supported count including seven, and reject missing verdicts',()=>{
+ for(const count of [3,4,5,6,7]){
+  const candidate=pack();candidate.questions=Array.from({length:count},(_,i)=>structuredClone(pack().questions[i%3]));
+  const blind={checks:Array.from({length:count},(_,i)=>structuredClone(keys().checks[i%3]))};
+  const checked={checks:Array.from({length:count},(_,i)=>structuredClone(feedback().checks[i%3]))};
+  assert.deepEqual(studySchema.verifiedStudyHints(raw(blind),candidate),Array(count).fill(true));
+  assert.deepEqual(verifiedStudyFeedback(raw(checked),candidate),Array(count).fill(true));
+  blind.checks.pop();checked.checks.pop();
+  assert.equal(studySchema.verifiedStudyHints(raw(blind),candidate),null);
+  assert.equal(verifiedStudyFeedback(raw(checked),candidate),null);
+ }
+});
+
+test('seven-question course completes all four stages with the selected budget and one lesson',async t=>{
+ const value=pack();
+ value.lessons=[{title:'SQL clauses',content:source,source_quote:'WHERE filters rows before grouping.'}];
+ value.questions=Array.from({length:7},(_,i)=>({...structuredClone(pack().questions[i%3]),prompt:`Question ${i+1}: ${pack().questions[i%3].prompt}`}));
+ const blind={checks:Array.from({length:7},(_,i)=>structuredClone(keys().checks[i%3]))};
+ const checked={checks:Array.from({length:7},(_,i)=>structuredClone(feedback().checks[i%3]))};
+ const {tutor,posts}=harness(t,(_,number)=>[value,blind,checked,checked][number-1]);
+ const result=await tutor.study({mode:'course',source_text:source,generation_options:{question_count:7,detail:'detailed'}});
+ assert.equal(result.status,'ready');assert.equal(result.result.questions.length,7);assert.equal(result.result.lessons.length,1);
+ assert.equal(posts.length,4);assert.equal(posts[0].max_tokens,6144);assert.equal(posts[1].max_tokens,2688);
+});

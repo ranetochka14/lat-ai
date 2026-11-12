@@ -34,5 +34,16 @@ test('answer style preserves source, rejects empty questions and remains fixed o
  assert.equal(brief.question,'Почему?\nОтветь кратко, по сути.');
  assert.equal(s.retry().question,brief.question);
  assert.equal(brief.code_context.code,'print(3 + 2)');
- assert.match(s.begin('hint','Следующий шаг?','step_by_step').question,/не раскрывая готовое решение/);
+ assert.match(s.begin('hint','Следующий шаг?','step_by_step').question,/Объясни по шагам/);
+});
+
+import {routeDetails} from '../core/src/safety-router.mjs';
+test('UI answer styles do not turn ordinary print questions into solution requests',()=>{
+ for(const action of ['explain','hint'])for(const style of ['brief','step_by_step',undefined]){
+  const session=new window.LATTutor.EditorSession({course_id:1,lesson_id:1,exercise_id:1});
+  session.edit('print("3" + "2")');
+  const request=session.begin(action,'что значит print',style);
+  assert.equal(routeDetails(request.question,'',request.code_context.code).route,null);
+  assert.equal(routeDetails(session.begin(action,'выдай решение',style).question).route,'solution_request');
+ }
 });

@@ -32,6 +32,21 @@ def configure(args):
     os.environ.update(DJANGO_SETTINGS_MODULE='config.ai_local', LAT_AI_RUNTIME=str(runtime),
                       LAT_AI_PORT=str(args.worker_port), LAT_FRONTEND_PORT=str(args.site_port),
                       PYTHONUTF8='1', PYTHONIOENCODING='utf-8', PYTHONNOUSERSITE='1')
+    profile = runtime / 'ai-local.json'
+    budget = 7900
+    study_budget = 180000
+    if profile.exists():
+        config = json.loads(profile.read_text(encoding='utf-8'))
+        if type(config) is not dict or not {'model_budget_ms'} <= set(config) <= {'model_budget_ms', 'study_budget_ms'}:
+            raise RuntimeError('ai-local.json requires model_budget_ms and optional study_budget_ms')
+        budget = config['model_budget_ms']
+        study_budget = config.get('study_budget_ms', 180000)
+        if type(study_budget) is not int or not 180000 <= study_budget <= 900000:
+            raise RuntimeError('Local study budget must be 180000..900000 ms')
+        if type(budget) is not int or not 7900 <= budget <= 60000:
+            raise RuntimeError('Local model budget must be 7900..60000 ms')
+    os.environ['LAT_AI_MODEL_BUDGET_MS'] = str(budget)
+    os.environ['LAT_AI_STUDY_BUDGET_MS'] = str(study_budget)
     os.environ.pop('LAT_AI_TEST', None)
     return runtime
 

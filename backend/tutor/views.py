@@ -1,9 +1,10 @@
+from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from .serializers import TutorAskSerializer
 from .context import resolve_context, resources, mapping_for
-from .transport import call_worker
+from .transport import call_worker, worker_status
 from django.core.exceptions import RequestDataTooBig
 from django.http import Http404
 from rest_framework.exceptions import APIException, ParseError
@@ -40,6 +41,15 @@ class TutorAskView(ContractView):
         code,response=call_worker(body,resolved)
         return Response(response,status=code,headers={'Cache-Control':'no-store'})
 
+
+class TutorStatusView(ContractView):
+    def get(self, request):
+        try:
+            result = worker_status()
+        except (OSError, ValueError, KeyError, TypeError, RuntimeError):
+            result = {'state': 'unavailable', 'can_generate': False}
+        return Response(result, headers={'Cache-Control': 'no-store'})
+
 class TutorContextView(ContractView):
     def get(self,request):
         try:
@@ -53,4 +63,4 @@ class TutorContextView(ContractView):
             mapping=mapping_for(course,lesson,exercise)
             exercises.append({'exercise_id':exercise.id,'supported':bool(mapping),'hint_supported':bool(mapping and mapping.get('task_key')),
                               'initial_code':mapping.get('initial_code','') if mapping else ''})
-        return Response({'contract_version':'1.0','course_id':course_id,'lesson_id':lesson_id,'exercises':exercises},headers={'Cache-Control':'no-store'})
+        return Response({'contract_version':'1.0','course_id':course_id,'lesson_id':lesson_id,'exercises':exercises,'timeout_ms':getattr(settings, 'LAT_AI_CLIENT_TIMEOUT_MS', 10000)},headers={'Cache-Control':'no-store'})

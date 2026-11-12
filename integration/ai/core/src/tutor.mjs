@@ -22,9 +22,10 @@ function requestValid(r){
 }
 export class Tutor {
  #enabled;#ready;#quarantine=false;#busy=false;#queue=[];#controller;#epoch=0;#adapter;
- constructor({generate,modelAdapter,answerMode='plain',experimental=false,modelEnabled=false,modelReady=false,modelBudgetMs=8000,minimumGenerationMs=4000,log=()=>{}}={}){
+ constructor({generate,modelAdapter,answerMode='plain',experimental=false,modelEnabled=false,modelReady=false,modelBudgetMs=8000,studyBudgetMs=STUDY_BUDGET_MS,minimumGenerationMs=4000,log=()=>{}}={}){
   if(!['plain','separated'].includes(answerMode))throw Error('answer mode');this.answerMode=answerMode;
-  if(!(modelBudgetMs>0&&modelBudgetMs<=8000&&minimumGenerationMs>0&&minimumGenerationMs<=modelBudgetMs))throw Error('budget');
+  if(!(Number.isInteger(modelBudgetMs)&&modelBudgetMs>0&&modelBudgetMs<=60000&&minimumGenerationMs>0&&minimumGenerationMs<=modelBudgetMs))throw Error('budget');
+  if(!Number.isInteger(studyBudgetMs)||studyBudgetMs<180000||studyBudgetMs>900000)throw Error('study budget');this.studyBudget=studyBudgetMs;
   if(modelAdapter&&generate)throw Error('choose modelAdapter or generate');this.#adapter=modelAdapter;
   this.generate=modelAdapter?modelAdapter.generate.bind(modelAdapter):generate;this.experimental=experimental;this.budget=modelBudgetMs;this.minimum=minimumGenerationMs;this.log=log;this.#enabled=experimental&&modelEnabled;this.#ready=modelReady;
  }
@@ -85,7 +86,7 @@ export class Tutor {
  }
 
  async study({mode,source_text,generation_options}){
-  const generated=await this.#generate({role:'study',mode,source_text,...(generation_options?{generation_options}:{})},performance.now(),STUDY_BUDGET_MS,generation_options?768*(generation_options.question_count+1):3072);
+  const generated=await this.#generate({role:'study',mode,source_text,...(generation_options?{generation_options}:{})},performance.now(),this.studyBudget,generation_options?768*(generation_options.question_count+1):3072);
   if(generated.reason!=='ok'){
    return {status:generated.uncertain?'unknown':'failed',result:null,error_code:generated.reason};
   }

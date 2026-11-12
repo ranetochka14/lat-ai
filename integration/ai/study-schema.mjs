@@ -121,7 +121,7 @@ function verificationSchema(count){
  })}});
 }
 
-const verificationValidators=new Map([3,4,5,6].map(count=>[count,ajv.compile(verificationSchema(count))]));
+const verificationValidators=new Map([3,4,5,6,7].map(count=>[count,ajv.compile(verificationSchema(count))]));
 
 export function studyVerification({source_text},candidate){
  const questions=candidate.questions.map(({prompt,options,hint,source_quote})=>({prompt,options,hint,source_quote}));
@@ -145,7 +145,7 @@ const feedbackSystem=[
 function feedbackSchema(count){
  return object({checks:{type:'array',minItems:count,maxItems:count,items:object({feedback_review:text(350),hint_review:text(300),remaining_step:text(200),hint_reveals_answer:{type:'boolean'},feedback_valid:{type:'boolean'},hint_usable:{type:'boolean'}})}});
 }
-const feedbackValidators=new Map([3,4,5,6].map(count=>[count,ajv.compile(feedbackSchema(count))]));
+const feedbackValidators=new Map([3,4,5,6,7].map(count=>[count,ajv.compile(feedbackSchema(count))]));
 export function studyFeedbackVerification({source_text},candidate){
  const questions=candidate.questions.map(({prompt,hint,explanation,source_quote,options,option_explanations,correct_index})=>({
   prompt,hint,explanation,source_quote,options:options.map((option,index)=>({option,is_correct:index===correct_index,explanation:option_explanations[index]}))

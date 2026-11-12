@@ -1,13 +1,14 @@
 import {Tutor} from './core/src/tutor.mjs';
 import {LocalModel} from './core/src/local-model.mjs';
+import {localModelFetch} from './local-model-http.mjs';
 import {setTimeout as delay} from 'node:timers/promises';
 
 // Operator-only lifecycle around the unchanged v10 coordinator. No adoption,
 // lock deletion, POST retry, shared-runtime shutdown or automatic replacement.
-export function createLifecycle({lockPath,modelKey='qwen3.5-9b',log=()=>{},loadOwned=LocalModel.loadOwned}={}){
+export function createLifecycle({lockPath,modelKey='qwen3.5-9b',modelBudgetMs=7900,studyBudgetMs=180000,log=()=>{},loadOwned=LocalModel.loadOwned}={}){
  // Leave 100 ms of the 8 s module budget for timer delivery and response work.
  // This is measured headroom, not a hard real-time guarantee under OS stalls.
- const tutorOptions={log,modelBudgetMs:7900};
+ const tutorOptions={log,modelBudgetMs,studyBudgetMs};
  let tutor=new Tutor(tutorOptions),model=null,loading=false,epoch=0;
  const health=()=>({service:'lat-ai-i02',loading,tutor:tutor.state,model:model?{id:model.model,...model.state}:null});
  async function control(action){
@@ -32,7 +33,7 @@ export function createLifecycle({lockPath,modelKey='qwen3.5-9b',log=()=>{},loadO
     model=null;tutor=new Tutor(tutorOptions);return health();
    }
    if(!model){
-    try{model=await loadOwned({modelKey,contextLength:8192,lockPath,recoveryLog:log});}
+    try{model=await loadOwned({modelKey,contextLength:8192,lockPath,recoveryLog:log,fetchImpl:localModelFetch});}
     catch(error){
      // Provisioning can fail after loading our instance. Keep its ownership
      // proof and quarantine; an unproven load still refuses retirement in core.
