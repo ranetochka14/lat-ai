@@ -1,0 +1,89 @@
+/* Profile appearance controls; theme is restored by appearance.js before paint. */
+.appearance-shortcut { width: 36px; height: 36px; border-radius: 12px; color: var(--ink); }
+.appearance-shortcut:hover { background: var(--mint); }
+.profile-preferences { margin: 24px 0; }
+.profile-preferences > h3 { font-size: 17px; margin-bottom: 12px; }
+.preference-toggle { display: flex; align-items: center; width: 100%; gap: 12px; padding: 15px 12px; margin-top: 10px; border: 1px solid var(--line); border-radius: 15px; background: var(--canvas); color: var(--ink); text-align: left; cursor: pointer; }
+.preference-toggle > span:first-child { flex: 1; min-width: 0; }
+.preference-toggle strong { display: block; font-size: 15px; font-weight: 600; }
+.preference-toggle small { display: block; margin-top: 4px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.preference-state { font-size: 12px; color: var(--muted); }
+.preference-track { position: relative; flex: 0 0 40px; height: 24px; border-radius: 20px; background: #89958e; }
+.preference-track::after { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; border-radius: 50%; background: #fff; transition: transform 160ms ease; }
+.preference-toggle[aria-checked="true"] .preference-track { background: #386b59; }
+.preference-toggle[aria-checked="true"] .preference-track::after { transform: translateX(16px); }
+.preference-toggle:hover { border-color: var(--teal); }
+@media (max-width: 480px) {
+  .friendly-account { gap: 8px; }
+  .appearance-shortcut { width: 32px; height: 36px; }
+  .preference-toggle { gap: 8px; padding: 13px 10px; }
+  .preference-state { font-size: 11px; }
+}
+
+html[data-theme="dark"] {
+  --navy: #e3ede6;
+  --ink: #e3ede6;
+  --teal: #a3d5b9;
+  --teal-dark: #c3e7d1;
+  --muted: #afbeb5;
+  --slate: #c3d1c8;
+  --line: #40564a;
+  --canvas: #20352b;
+  --mint: #304b3d;
+  --white: #1c3026;
+  --surface: #1c3026;
+  --surface-raised: #263e31;
+  --field: #14271e;
+  background: #14231f;
+  color-scheme: dark;
+}
+html[data-theme="dark"] body.friendly-layout { background: #14231f; color: var(--ink); }
+html[data-theme="dark"] .friendly-sidebar { background: linear-gradient(165deg, #21362b, #1a2c23); }
+html[data-theme="dark"] .friendly-topbar { background: #14231f; }
+html[data-theme="dark"] :is(.friendly-brand, .friendly-topbar .profile-button, .friendly-course-copy > p, .friendly-meter > span:last-child, .friendly-answer-score) { color: var(--ink); }
+html[data-theme="dark"] :is(.friendly-sidebar-note, .friendly-sidebar-note > small, .friendly-file-hint, .friendly-empty, .friendly-footer, .friendly-footer a, .friendly-footer .link-button) { color: var(--muted); }
+html[data-theme="dark"] .friendly-layout .avatar,
+html[data-theme="dark"] .friendly-topbar .mobile-menu { background: var(--mint); color: var(--ink); }
+html[data-theme="dark"] .friendly-nav > a:hover { background: var(--surface-raised); }
+html[data-theme="dark"] .friendly-nav > a[aria-current="page"] { color: #fff; }
+html[data-theme="dark"] .friendly-welcome { background: linear-gradient(110deg, #44352c, #3c322c); }
+html[data-theme="dark"] .friendly-welcome-art { filter: brightness(.82); }
+html[data-theme="dark"] .friendly-course-card { background: linear-gradient(110deg, #263e30, #22392c); }
+html[data-theme="dark"] :is(.friendly-docs, .friendly-layout .catalog-toolbar, .friendly-layout .connection-state, .friendly-layout .auth-gate, .friendly-layout .study-card, .friendly-layout .course-card) { background: var(--surface); }
+html[data-theme="dark"] :is(.friendly-doc-row, .friendly-answer-row, .friendly-layout .panel, .stats-grid > div, .friendly-layout dialog, .friendly-layout .search-result) { background: var(--surface); color: var(--ink); }
+html[data-theme="dark"] .friendly-answers { background: #373148; }
+html[data-theme="dark"] :is(.friendly-course-icon, .friendly-answer-icon, .friendly-tutor-icon, .friendly-layout .course-symbol, .friendly-layout .feature-icon) { background: #413653; color: #d4bced; }
+html[data-theme="dark"] .friendly-course-card:nth-child(even) .friendly-course-icon { background: #503b2f; color: #e2b892; }
+html[data-theme="dark"] .friendly-document-icon { color: #d4bced; }
+html[data-theme="dark"] .friendly-document-icon > .icon { fill: #413653; }
+html[data-theme="dark"] .friendly-tutor { background: #44352c; }
+html[data-theme="dark"] .friendly-tutor:hover { background: #503e32; }
+html[data-theme="dark"] .friendly-tutor-decoration { background: #584133; }
+html[data-theme="dark"] .friendly-tutor-icon > .icon { fill: #b49bcb; stroke: #d4bced; }
+html[data-theme="dark"] .friendly-layout .success { background: #315442; color: #dbf2e2; }
+html[data-theme="dark"] .friendly-layout .neutral { background: #4d4031; color: #f1d4a9; }
+html[data-theme="dark"] .friendly-tutor .badge.neutral { background: #413653; color: #e0cdf4; }
+html[data-theme="dark"] .friendly-layout .danger { background: #57382f; color: #ffc7b5; }
+html[data-theme="dark"] .friendly-layout :is(input, textarea, select, .friendly-search-field) { background: var(--field); border-color: var(--line); color: var(--ink); }
+html[data-theme="dark"] .friendly-search-field > input { background: transparent; }
+html[data-theme="dark"] .friendly-layout :is(input, textarea)::placeholder { color: var(--muted); }
+html[data-theme="dark"] .friendly-search-field > .icon,
+html[data-theme="dark"] .friendly-search-field .icon-button { color: var(--muted); }
+html[data-theme="dark"] .friendly-layout .button.primary { background: #386b59; color: #fff; border-color: #60967b; }
+html[data-theme="dark"] .friendly-layout .button.primary:hover { background: #427b65; }
+html[data-theme="dark"] .friendly-layout :is(.button.secondary, .file-label) { background: var(--surface-raised); border-color: var(--line); color: var(--ink); }
+html[data-theme="dark"] .friendly-layout :is(.button.secondary, .file-label):hover { background: var(--mint); }
+html[data-theme="dark"] .friendly-layout .button.destructive { background: #843f36; color: #fff; }
+html[data-theme="dark"] .friendly-layout .progress-track { background: #40584a; }
+html[data-theme="dark"] .friendly-layout .progress-track > span { background: #9fc9ac; }
+html[data-theme="dark"] .friendly-layout :is(.panel-heading, th) { background: var(--surface-raised); }
+html[data-theme="dark"] :is(tbody tr:hover, .lesson-row:hover) { background: var(--surface-raised); }
+html[data-theme="dark"] :is(.lesson-content, .ai-state) { color: var(--slate); }
+html[data-theme="dark"] .ai-panel { background: var(--surface); border-color: var(--line); }
+html[data-theme="dark"] .ai-selection { background: var(--field); }
+html[data-theme="dark"] .friendly-error { background: #49382c; color: #f1d4b7; }
+html[data-theme="dark"] .friendly-layout :is(.form-error, .error-text) { color: #ffb7a9 !important; }
+html[data-theme="dark"] #toast { background: #c3e7d1; color: #14231f; }
+html[data-theme="dark"] .skip-link { background: var(--surface-raised); color: var(--ink); }
+html[data-theme="dark"] dialog::backdrop { background: #050d0bb3; }
+html[data-theme="dark"] .preference-toggle[aria-checked="true"] .preference-track { background: #568d70; }

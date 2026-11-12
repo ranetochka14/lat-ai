@@ -183,6 +183,7 @@
   }
   function applyPreference() {
     document.documentElement.dataset.motion = reduceMotion() ? 'reduced' : 'full';
+    window.dispatchEvent(new Event('lat:motion-change'));
     if (!reduceMotion()) return;
     animations.forEach(animation => animation.cancel());
     pressed.forEach(el => el.classList.remove('lat-pressed'));
