@@ -40,7 +40,7 @@
   function clearAuth() { generation++; remove('sessionStorage', 'tokens'); }
   function configure(options) {
     const next = normalBase(options && options.baseUrl || config.baseUrl);
-    if (next !== config.baseUrl) clearAuth();
+    if (next !== config.baseUrl) { clearAuth(); aiTimeoutMs = 10000; }
     config = { mode: 'api', baseUrl: next };
     write('localStorage', 'settings', config);
     return settings();
@@ -186,7 +186,7 @@
     const id = validId(typeof exercise === 'object' && exercise ? exercise.id : exercise);
     const text = String(answer || '').trim();
     if (!text) throw fail('Напишите ответ перед отправкой.');
-    return request('progress/attempts/', { method: 'POST', body: { exercise: id, answer: text } });
+    return request('progress/attempts/', { method: 'POST', body: { exercise: id, answer: text }, timeoutMs: Math.max(30000, aiTimeoutMs) });
   }
   async function documents() { return collection('documents/'); }
   async function uploadDocument(file) {
@@ -212,7 +212,14 @@
   async function studyAttempt(id, body) {
     return request(packPath(id) + 'attempts/', { method: 'POST', body });
   }
-  async function tutorAsk(body) { return request('tutor/ask/', {method:'POST',body,timeoutMs:10000}); }
-  async function tutorContext(courseId,lessonId) { return request('tutor/context/?course_id='+validId(courseId)+'&lesson_id='+validId(lessonId)); }
-  global.LAT = Object.freeze({ mode, configure, settings, me, login, register, logout, courses, lessons, exercises, dashboard, attempts, submitAttempt, documents, uploadDocument, deleteDocument, documentDetail, generateStudyPack, studyPacks, studyPack, studyHint, studyAttempt, progress, tutorAsk, tutorContext });
+  let aiTimeoutMs = 10000;
+  async function tutorStatus() { return request('tutor/status/'); }
+  async function tutorAsk(body) { return request('tutor/ask/', {method:'POST',body,timeoutMs:aiTimeoutMs}); }
+  async function tutorContext(courseId,lessonId) {
+    const started = generation;
+    const context = await request('tutor/context/?course_id='+validId(courseId)+'&lesson_id='+validId(lessonId));
+    if (started === generation) aiTimeoutMs = Number.isInteger(context.timeout_ms) && context.timeout_ms >= 10000 && context.timeout_ms <= 80000 ? context.timeout_ms : 10000;
+    return context;
+  }
+  global.LAT = Object.freeze({ mode, configure, settings, me, login, register, logout, courses, lessons, exercises, dashboard, attempts, submitAttempt, documents, uploadDocument, deleteDocument, documentDetail, generateStudyPack, studyPacks, studyPack, studyHint, studyAttempt, progress, tutorAsk, tutorContext, tutorStatus });
 })(window);

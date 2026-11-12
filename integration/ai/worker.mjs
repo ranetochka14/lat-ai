@@ -9,7 +9,7 @@ const dir=resolve(process.env.LAT_AI_RUNTIME??fileURLToPath(new URL('../../.runt
 mkdirSync(dir,{recursive:true});
 const secret=readFileSync(join(dir,'ipc-secret.txt'),'utf8').trim();
 const log=event=>appendFileSync(join(dir,'ai-runtime.jsonl'),JSON.stringify({at:new Date().toISOString(),...event})+'\n');
-const lifecycle=createLifecycle({lockPath:join(dir,'model-inflight.lock'),modelKey:process.env.LAT_MODEL_KEY||'qwen3.5-9b',log});
+const lifecycle=createLifecycle({lockPath:join(dir,'model-inflight.lock'),modelKey:process.env.LAT_MODEL_KEY||'qwen3.5-9b',modelBudgetMs:Number(process.env.LAT_AI_MODEL_BUDGET_MS??7900),studyBudgetMs:Number(process.env.LAT_AI_STUDY_BUDGET_MS??180000),log});
 const bridge=createBridge({dbPath:join(dir,'replay.sqlite3'),tutor:lifecycle,log});
 const {health,control}=lifecycle;
 const server=createWorkerServer({secret,bridge,health,control});

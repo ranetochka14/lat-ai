@@ -20,6 +20,14 @@ LAT_FRONTEND_PORT = int(os.environ.get('LAT_FRONTEND_PORT', '5173'))
 CORS_ALLOWED_ORIGINS = [f'http://{host}:{LAT_FRONTEND_PORT}' for host in ('localhost', '127.0.0.1')]
 MEDIA_ROOT = LAT_AI_RUNTIME / 'private-media'
 LAT_AI_AUTOGRADE = True
+LAT_AI_STUDY_BUDGET_MS = int(os.environ.get('LAT_AI_STUDY_BUDGET_MS', '180000'))
+if not 180000 <= LAT_AI_STUDY_BUDGET_MS <= 900000:
+    raise ValueError('Invalid local study budget')
+LAT_AI_MODEL_BUDGET_MS = int(os.environ.get('LAT_AI_MODEL_BUDGET_MS', '7900'))
+if not 1 <= LAT_AI_MODEL_BUDGET_MS <= 60000:
+    raise ValueError('Invalid local AI time budget')
+LAT_AI_TRANSPORT_SECONDS = 9 if LAT_AI_MODEL_BUDGET_MS <= 7900 else LAT_AI_MODEL_BUDGET_MS / 1000 + 10
+LAT_AI_CLIENT_TIMEOUT_MS = 10000 if LAT_AI_MODEL_BUDGET_MS <= 7900 else LAT_AI_MODEL_BUDGET_MS + 20000
 DATA_UPLOAD_MAX_MEMORY_SIZE = 49152
 PASSWORD_HASHERS = ['django.contrib.auth.hashers.PBKDF2PasswordHasher']
 

@@ -1,4 +1,5 @@
 # Preserve pinned source bytes across Windows checkouts.
 integration/ai/core/** -text
+backend/courses/data/school-courses-v3.json -text
 
 docs/** linguist-documentation

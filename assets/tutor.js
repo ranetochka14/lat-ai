@@ -7,7 +7,7 @@
     select(start,end) { this.selection=start<end?{start,end}:null; }
     begin(action,question,style) {
       if(!question.trim()||question.length>2000)throw Error('Напиши вопрос длиной до 2000 символов.');
-      const suffix=style==='brief'?'\nОтветь кратко, по сути.':style==='step_by_step'?'\nОбъясни по шагам, не раскрывая готовое решение в подсказке.':'';
+      const suffix=style==='brief'?'\nОтветь кратко, по сути.':style==='step_by_step'?'\nОбъясни по шагам.':'';
       if(question.length+suffix.length>2000)throw Error('Сократи вопрос до 1900 символов, чтобы добавить выбранный стиль ответа.');
       question+=suffix;
       if(this.code.length>4000)throw Error('Код длиннее 4000 символов. Он не будет обрезан.');

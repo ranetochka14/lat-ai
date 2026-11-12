@@ -351,3 +351,54 @@ test('course pack Markdown handles adjacent headings, ordered practice and safe 
   assert.match(html,/&lt;img/); assert.match(html,/&lt;script&gt;/);
   assert.doesNotMatch(html,/<img|<script|href="javascript:/);
 });
+
+test('generation explains disabled model before submitting a request', async () => {
+  const app=mountApp('/documents/11',{}, {
+    documentDetail:async()=>({id:11,title:'Text',status:'ready',extracted_text:'x'.repeat(120)}),
+    tutorStatus:async()=>({state:'disabled',can_generate:false})
+  });
+  await turn();
+  assert.match(app.main.innerHTML,/Модель выключена/);
+  assert.match(app.main.innerHTML,/<button class="button primary" type="submit" disabled>Создать/);
+});
+
+test('failed generation explains quarantine; unknown never offers a new generation', async () => {
+  for(const state of ['failed','unknown']){
+    const app=mountApp('/study/27',{}, {studyPack:async()=>({id:27,document_id:11,mode:'test',status:state,error_code:'quarantined',source_start:0,source_end:120})});
+    await turn();
+    assert.match(app.main.innerHTML,/Предыдущий запрос к ИИ не завершён/);
+    if(state==='unknown')assert.doesNotMatch(app.main.innerHTML,/Вернуться к документу/);
+    else assert.match(app.main.innerHTML,/Вернуться к документу/);
+  }
+});
+
+test('client adopts only bounded server AI deadlines and resets them when API changes', async () => {
+  const window = {}, delays=[];let timeout=80000;
+  vm.runInNewContext(fs.readFileSync('assets/data.js','utf8'),{
+    window,URL,Headers,FormData,AbortController,
+    setTimeout:(_,ms)=>{delays.push(ms);return 1;},clearTimeout(){},
+    fetch:async url=>({ok:true,text:async()=>JSON.stringify(String(url).includes('context/')?{timeout_ms:timeout}:{ok:true})})
+  });
+  const api=window.LAT;
+  await api.tutorContext(1,1);await api.tutorAsk({});assert.equal(delays.at(-1),80000);
+  await api.submitAttempt(1,'Answer');assert.equal(delays.at(-1),80000);
+  timeout=999999;await api.tutorContext(1,1);await api.tutorAsk({});assert.equal(delays.at(-1),10000);
+  timeout=80000;await api.tutorContext(1,1);api.configure({baseUrl:'http://localhost:8001/api/v1'});
+  await api.tutorAsk({});assert.equal(delays.at(-1),10000);
+});
+
+test('readiness refresh preserves document selection and never generates automatically', async () => {
+  let reads=0,posts=0;
+  const message={textContent:''};const form=fakeForm('generate-study',{'[data-ai-status]':message});
+  form.values={first:'12',last:'650',question_count:'7'};
+  const control={dataset:{action:'refresh-ai-status'},form,disabled:false,closest:()=>null};
+  const app=mountApp('/documents',{}, {documents:async()=>[],studyPacks:async()=>[],
+    tutorStatus:async()=>{reads++;return {state:'ready',can_generate:true};},
+    generateStudyPack:async()=>{posts++;}
+  });
+  await turn();await app.click(control);
+  assert.equal(reads,1);assert.equal(posts,0);
+  assert.equal(form.values.first,'12');assert.equal(form.values.question_count,'7');
+  assert.equal(form.querySelector('[type="submit"]').disabled,false);
+  assert.match(message.textContent,/ИИ готов/);
+});

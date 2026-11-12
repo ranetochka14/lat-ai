@@ -60,7 +60,7 @@ def call_study(endpoint, body, resolved):
     )
     opener = build_opener(ProxyHandler({}), NoRedirect())
     try:
-        response = opener.open(request, timeout=210 if endpoint == '/study' else 5)
+        response = opener.open(request, timeout=getattr(settings, 'LAT_AI_STUDY_BUDGET_MS', 180000) / 1000 + 30 if endpoint == '/study' else 5)
     except HTTPError as error:
         response = error
     with response:

@@ -8,6 +8,34 @@ class NoRedirect(HTTPRedirectHandler):
     def redirect_request(self, *args, **kwargs):
         return None
 
+
+def worker_status():
+    """Read-only public projection; no paths, model identifiers or controls."""
+    port = getattr(settings, 'LAT_AI_PORT', 8372)
+    if type(port) is not int or not 1 <= port <= 65535:
+        raise RuntimeError('invalid worker configuration')
+    secret = Path(settings.LAT_AI_SECRET_FILE).read_text(encoding='utf-8').strip()
+    request = Request(f'http://127.0.0.1:{port}/health', headers={'X-LAT-IPC': secret})
+    with build_opener(ProxyHandler({}), NoRedirect()).open(request, timeout=3) as response:
+        raw = response.read(8193)
+        if len(raw) > 8192:
+            raise RuntimeError('worker response limit')
+        health = json.loads(raw)
+    tutor = health['tutor']
+    if health.get('loading'):
+        state = 'loading'
+    elif tutor.get('quarantined'):
+        state = 'quarantined'
+    elif not tutor.get('enabled'):
+        state = 'disabled'
+    elif not tutor.get('ready'):
+        state = 'cold'
+    elif tutor.get('busy'):
+        state = 'busy'
+    else:
+        state = 'ready'
+    return {'state': state, 'can_generate': state == 'ready'}
+
 def call_worker(body, resolved):
     return _call(body, resolved, '/ask')
 
@@ -25,7 +53,7 @@ def _call(body, resolved, endpoint):
                       headers={'Content-Type':'application/json','X-LAT-IPC':secret},method='POST')
     opener = build_opener(ProxyHandler({}),NoRedirect())
     try:
-        response = opener.open(request,timeout=9)
+        response = opener.open(request,timeout=getattr(settings, 'LAT_AI_TRANSPORT_SECONDS', 9))
     except HTTPError as error:
         response = error
     with response:
