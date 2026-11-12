@@ -340,3 +340,14 @@ test('hint callout labels and escapes the supplied hint without rewriting it', a
   await app.click(control);
   assert.equal(calls, 1);
 });
+
+
+test('course pack Markdown handles adjacent headings, ordered practice and safe inline code', async () => {
+  const content = '## Теория\n**Тип**: `str`\n## Практика\n1. Первое\n2. Второе\n\n**<img src=x onerror=alert(1)>**\n`<script>alert(1)</script>`\n[ссылка](javascript:alert(1))';
+  const app=mountApp('/lesson/1/2',{}, {lessons:async()=>[{id:2,title:'Урок',content}],exercises:async()=>[],attempts:async()=>[]});
+  await turn(); const html=app.main.innerHTML;
+  assert.match(html,/<h3>Теория<\/h3><p class="preserve-lines"><strong>Тип<\/strong>: <code>str<\/code><\/p><h3>Практика<\/h3>/);
+  assert.match(html,/<ol start="1"><li>Первое<\/li><li>Второе<\/li><\/ol>/);
+  assert.match(html,/&lt;img/); assert.match(html,/&lt;script&gt;/);
+  assert.doesNotMatch(html,/<img|<script|href="javascript:/);
+});
