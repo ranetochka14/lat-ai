@@ -1,8 +1,8 @@
 # I02 — адаптер и локальная интеграция
 
-Контракт и примеры: `../../docs/ai/TUTOR_API_V1.md`, `../../contracts/`.
+Контракт и примеры: `../../docs/specs/TUTOR_API_V1.md`, `../../contracts/`.
 
-adapter.mjs остаётся библиотекой преобразования запроса и ответа. I02.2 добавляет bridge.mjs (приватный журнал), worker-http.mjs/worker.mjs (один loopback worker), существующий Django JWT endpoint и панель редактора. См. ../../docs/ai/I02_2_RUN.md. Не использовать прежние demoEvents как историю пользователей.
+adapter.mjs остаётся библиотекой преобразования запроса и ответа. I02.2 добавляет bridge.mjs (приватный журнал), worker-http.mjs/worker.mjs (один loopback worker), существующий Django JWT endpoint и панель редактора. Историческая инструкция — [в ветке archive](https://github.com/ranetochka14/lat-ai/tree/archive/docs/ai/I02_2_RUN.md); актуальный запуск — [RUNBOOK](../../docs/agent-handoff/RUNBOOK.md). Не использовать прежние demoEvents как историю пользователей.
 
 Node22+. Runtime не имеет сторонних зависимостей. Ajv — только dev-зависимость проверки схем, версии фиксированы package-lock.
 
@@ -35,6 +35,6 @@ npm --prefix integration/ai run check
 
 Основа core/src и core/data — LAT AI v10; происхождение и исходные хеши в UPSTREAM.json, явно изменённые файлы — в LOCAL_OVERRIDES.json. Автооценка добавлена поверх исходного ядра. Веса, runtime-логи и секреты не включены. Поддержка схем и успешные тесты не равны проверке смыслового качества модели или допуску детей. Детерминированный запрет полного разбора относится к hint level4, а не гарантии смысла свободного explain.
 
-Название продукта — LAT AI. Прежние `LAD_AI_*`, `X-LAD-IPC` и адрес тестового аккаунта сохраняются как совместимые технические идентификаторы; их переименование требует согласования интеграции с backend/frontend-разработчиками. Область этой работы — AI core/worker, промпты, рубрики и проверки качества; см. `../../docs/ai/TEAM_OWNERSHIP_AND_RECOVERY.md`.
+Название продукта — LAT AI. Прежние `LAD_AI_*`, `X-LAD-IPC` и адрес тестового аккаунта сохраняются как совместимые технические идентификаторы; их переименование требует согласования интеграции с backend/frontend-разработчиками. Область этой работы — AI core/worker, промпты, рубрики и проверки качества; историческое распределение ответственности — [в ветке archive](https://github.com/ranetochka14/lat-ai/tree/archive/docs/ai/TEAM_OWNERSHIP_AND_RECOVERY.md), актуальные ограничения — в [AGENTS.md](../../AGENTS.md).
 
 Статический сервер отдаёт только index.html и assets/ до и после realpath. Приватные integration/.runtime не должны быть доступны, в том числе по коротким NTFS-именам. Полный npm test включает реальные localhost-проверки и запуск/аварийное завершение отдельного синтетического worker; живую модель не вызывает. Node SQLite пока выдаёт ExperimentalWarning; проверенная версия — 24.11.1.

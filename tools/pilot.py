@@ -76,9 +76,9 @@ def run(args, runtime):
     if not Path(node).is_file():
         node = shutil.which('node')
     if not node:
-        raise RuntimeError('Node.js 22.13+ required. See README-PILOT.txt.')
+        raise RuntimeError('Node.js 22.13+ required. See docs/README-PILOT.txt.')
     if args.enable_model and not shutil.which('lms'):
-        raise RuntimeError('LM Studio CLI (lms) must be available in PATH. See README-PILOT.txt.')
+        raise RuntimeError('LM Studio CLI (lms) must be available in PATH. See docs/README-PILOT.txt.')
     prepare_safe()
     commands = {
         'worker': [node, args.worker_script or 'integration/ai/worker.mjs'],
