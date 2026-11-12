@@ -423,45 +423,45 @@ body.friendly-layout { background: #fff9f0; color: #23483e; }
    Use real layout dimensions, not browser zoom or a scaled page: text stays sharp,
    fixed navigation and dialogs keep their coordinates, and mobile stays readable. */
 @media (min-width: 741px) {
-  .friendly-sidebar { width: 168px; padding: 22px 10px; border-radius: 0 20px 20px 0; }
+  .friendly-sidebar { width: 156px; padding: 20px 8px; border-radius: 0 20px 20px 0; }
   .friendly-brand { gap: 8px; padding: 3px 10px; }
-  .friendly-brand > svg { width: 32px; height: 30px; }
-  .friendly-brand strong { font-size: 27px; letter-spacing: -1px; }
+  .friendly-brand > svg { width: 28px; height: 28px; }
+  .friendly-brand strong { font-size: 24px; letter-spacing: -1px; }
   .friendly-brand small { font-size: 6px; letter-spacing: 1px; }
   .friendly-nav { gap: 6px; margin-top: 30px; }
-  .friendly-nav > a { min-height: 44px; padding: 10px 14px; gap: 12px; font-size: 16px; border-radius: 22px; }
+  .friendly-nav > a { min-height: 40px; padding: 9px 12px; gap: 10px; font-size: 15px; border-radius: 22px; }
   .friendly-nav .icon { width: 22px; height: 22px; }
   .friendly-sidebar-note { padding: 18px 8px 0; font-size: 11px; }
   .friendly-sidebar-note > small { font-size: 10px; }
-  .friendly-layout #main { margin-left: 168px; padding: 0 24px; min-height: calc(100vh - 120px); }
+  .friendly-layout #main { margin-left: 156px; padding: 0 24px; min-height: calc(100vh - 120px); }
   .friendly-layout #main > .container { width: 100%; max-width: 1100px; }
-  .friendly-topbar { margin-left: 168px; height: 66px; padding: 0 26px; }
+  .friendly-topbar { margin-left: 156px; height: 60px; padding: 0 26px; }
   .friendly-account { gap: 16px; }
-  .friendly-topbar .profile-button { gap: 12px; font-size: 18px; }
-  .friendly-topbar .avatar { width: 40px; height: 40px; font-size: 23px; }
+  .friendly-topbar .profile-button { gap: 10px; font-size: 16px; }
+  .friendly-topbar .avatar { width: 36px; height: 36px; font-size: 21px; }
   .friendly-topbar .avatar .icon { width: 23px; height: 23px; }
   .friendly-topbar .account-chevron { font-size: 18px; }
   .friendly-topbar .guest-register { font-size: 14px; }
-  .friendly-home { max-width: 1000px; margin: 0 auto 20px; }
-  .friendly-welcome { min-height: 176px; border-radius: 24px; align-items: center; }
-  .friendly-welcome-copy { width: 62%; padding: 28px 34px; }
-  .friendly-welcome h1 { font-size: 44px; letter-spacing: -1.3px; margin-bottom: 9px; }
-  .friendly-welcome-copy > p { font-size: 26px; letter-spacing: -.4px; }
+  .friendly-home { max-width: 920px; margin: 0 auto 20px; }
+  .friendly-welcome { min-height: 156px; border-radius: 24px; align-items: center; }
+  .friendly-welcome-copy { width: 62%; padding: 24px 28px; }
+  .friendly-welcome h1 { font-size: 38px; letter-spacing: -1.3px; margin-bottom: 9px; }
+  .friendly-welcome-copy > p { font-size: 22px; letter-spacing: -.4px; }
   .friendly-welcome-art { width: 40%; height: calc(100% - 10px); top: 5px; bottom: auto; right: 14px; object-fit: contain; opacity: 1; }
   .friendly-middle { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 18px; margin-top: 20px; }
-  .friendly-courses > h2 { font-size: 27px; margin: 0 8px 14px; letter-spacing: -.5px; }
+  .friendly-courses > h2 { font-size: 24px; margin: 0 8px 14px; letter-spacing: -.5px; }
   .friendly-course-stack { gap: 12px; }
-  .friendly-course-card { grid-template-columns: 62px minmax(0, 1fr) auto; min-height: 96px; padding: 14px 16px; gap: 14px; border-radius: 20px; }
-  .friendly-course-icon { width: 62px; height: 62px; font-size: 40px; border-radius: 17px; }
+  .friendly-course-card { grid-template-columns: 54px minmax(0, 1fr) auto; min-height: 84px; padding: 12px 14px; gap: 12px; border-radius: 20px; }
+  .friendly-course-icon { width: 54px; height: 54px; font-size: 40px; border-radius: 17px; }
   .friendly-course-icon > .icon { width: 32px; height: 32px; }
-  .friendly-course-copy h3 { font-size: 21px; line-height: 1.2; letter-spacing: -.4px; margin-bottom: 5px; }
+  .friendly-course-copy h3 { font-size: 19px; line-height: 1.2; letter-spacing: -.4px; margin-bottom: 5px; }
   .friendly-course-copy > p, .friendly-placeholder .friendly-course-copy > p { font-size: 14px; margin-bottom: 9px; }
   .friendly-meter { gap: 10px; }
   .friendly-meter .progress-track { height: 10px; }
   .friendly-meter > span:last-child { font-size: 14px; min-width: 34px; }
   .friendly-course-open.button { grid-column: auto; min-width: 0; min-height: 38px; padding: 9px 16px; font-size: 14px; border-radius: 13px; }
   .friendly-docs { padding: 16px 18px 20px; min-height: 0; border-radius: 22px; }
-  .friendly-docs > h2 { font-size: 27px; letter-spacing: -.5px; margin-bottom: 13px; }
+  .friendly-docs > h2 { font-size: 24px; letter-spacing: -.5px; margin-bottom: 13px; }
   .friendly-search-field { height: 42px; border-radius: 12px; }
   .friendly-search-field > input { height: 40px; font-size: 15px; }
   .friendly-search-field > .icon { width: 19px; height: 19px; margin-left: 12px; }
@@ -477,8 +477,8 @@ body.friendly-layout { background: #fff9f0; color: #23483e; }
   .friendly-upload > .icon { width: 22px; height: 22px; }
   .friendly-file-hint { font-size: 14px; margin-top: 8px; }
   .friendly-bottom { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 18px; margin-top: 22px; }
-  .friendly-answers { min-height: 164px; padding: 12px 16px 14px; border-radius: 22px; }
-  .friendly-answers > h2 { font-size: 27px; letter-spacing: -.5px; margin-bottom: 10px; }
+  .friendly-answers { min-height: 148px; padding: 12px 16px 14px; border-radius: 22px; }
+  .friendly-answers > h2 { font-size: 24px; letter-spacing: -.5px; margin-bottom: 10px; }
   .friendly-answer-row { min-height: 46px; padding: 6px 10px; gap: 12px; flex-wrap: nowrap; border-radius: 13px; }
   .friendly-answer-row + .friendly-answer-row { margin-top: 6px; }
   .friendly-answer-icon { width: 34px; height: 34px; border-radius: 10px; }
@@ -486,14 +486,14 @@ body.friendly-layout { background: #fff9f0; color: #23483e; }
   .friendly-answer-title { flex-basis: auto; font-size: 16px; }
   .friendly-answer-row > .badge { margin-left: 0; }
   .friendly-answer-score { min-width: 62px; font-size: 16px; }
-  .friendly-tutor { flex-direction: row; align-items: center; justify-content: flex-start; min-height: 164px; margin: 0; padding: 22px 18px; gap: 14px; border-radius: 22px; }
+  .friendly-tutor { flex-direction: row; align-items: center; justify-content: flex-start; min-height: 148px; margin: 0; padding: 22px 18px; gap: 14px; border-radius: 22px; }
   .friendly-tutor-icon { width: 72px; height: 74px; border-radius: 20px; }
   .friendly-tutor-icon > .icon { width: 50px; height: 50px; }
-  .friendly-tutor h2 { font-size: 25px; letter-spacing: -.4px; margin-bottom: 8px; }
+  .friendly-tutor h2 { font-size: 23px; letter-spacing: -.4px; margin-bottom: 8px; }
   .friendly-tutor .badge.neutral { font-size: 14px; padding: 3px 13px; }
   .friendly-tutor::after { width: 7px; height: 20px; right: 30px; top: 25px; }
   .friendly-empty, .friendly-course-card.friendly-empty, .friendly-answer-row.friendly-empty { font-size: 14px; }
-  .friendly-footer { margin: 0 24px 0 192px; padding: 5px 0 20px; flex-wrap: wrap; gap: 12px; font-size: 12px; }
+  .friendly-footer { margin: 0 24px 0 180px; padding: 5px 0 20px; flex-wrap: wrap; gap: 12px; font-size: 12px; }
   .friendly-footer > div { gap: 20px; flex-wrap: wrap; }
   .friendly-footer .link-button, .friendly-footer a { font-size: 12px; }
 }
@@ -502,9 +502,43 @@ body.friendly-layout { background: #fff9f0; color: #23483e; }
 }
 @media (min-width: 741px) and (max-width: 1100px) {
   .friendly-middle, .friendly-bottom { grid-template-columns: 1fr; }
-  .friendly-welcome h1 { font-size: 36px; }
+  .friendly-welcome h1 { font-size: 32px; }
   .friendly-welcome-copy > p { font-size: 22px; }
   .friendly-welcome-copy { width: 68%; padding: 24px; }
   .friendly-welcome-art { width: 35%; }
   .friendly-tutor { min-height: 130px; }
 }
+
+/* Keep the narrower layout compact as well, without scaling browser controls. */
+@media (max-width: 740px) {
+  .friendly-sidebar { width: 220px; }
+  .friendly-sidebar .friendly-brand strong { font-size: 29px; }
+  .friendly-sidebar .friendly-brand > svg { width: 34px; height: 32px; }
+  .friendly-nav > a { font-size: 18px; min-height: 44px; padding: 11px 14px; gap: 14px; }
+  .friendly-topbar { height: 62px; }
+  .friendly-welcome { min-height: 190px; }
+  .friendly-welcome h1 { font-size: 32px; }
+  .friendly-welcome-copy > p { font-size: 21px; }
+  .friendly-middle, .friendly-bottom { gap: 18px; margin-top: 20px; }
+  .friendly-course-card { min-height: 108px; padding: 14px; gap: 12px; }
+  .friendly-course-copy h3 { font-size: 22px; }
+  .friendly-course-icon { width: 56px; height: 62px; }
+  .friendly-docs > h2, .friendly-courses > h2, .friendly-answers > h2 { font-size: 25px; }
+  .friendly-tutor h2 { font-size: 23px; }
+}
+@media (max-width: 480px) {
+  .friendly-welcome { min-height: 210px; }
+  .friendly-welcome-copy { padding: 20px; }
+  .friendly-welcome h1 { font-size: 30px; }
+  .friendly-welcome-copy > p { font-size: 20px; }
+  .friendly-welcome-art { height: 115px; }
+  .friendly-course-card { grid-template-columns: 56px minmax(0, 1fr); }
+  .friendly-course-copy h3 { font-size: 21px; }
+}
+
+/* Owner-requested additional 20% reduction; browser zoom stays unchanged. */
+body.friendly-layout { zoom: .8; }
+.friendly-layout #main { min-height: calc(125dvh - 120px); }
+.friendly-sidebar-credit { margin-top: auto; padding: 20px 4px 0; font-size: 10px; line-height: 1.5; color: var(--muted); white-space: nowrap; }
+.friendly-footer { justify-content: flex-end; }
+.friendly-layout dialog { max-height: 112.5dvh; }

@@ -29,11 +29,12 @@
     const dot = document.createElement('span');
     dot.className = 'lat-ripple';
     dot.setAttribute('aria-hidden', 'true');
-    const size = Math.hypot(rect.width, rect.height) * 2;
+    const pageZoom = parseFloat(getComputedStyle(document.body).zoom) || 1;
+    const size = Math.hypot(rect.width, rect.height) * 2 / pageZoom;
     const pointer = event.type === 'pointerdown';
     dot.style.width = dot.style.height = size + 'px';
-    dot.style.left = (pointer ? event.clientX - rect.left : rect.width / 2) + 'px';
-    dot.style.top = (pointer ? event.clientY - rect.top : rect.height / 2) + 'px';
+    dot.style.left = (pointer ? event.clientX - rect.left : rect.width / 2) / pageZoom + 'px';
+    dot.style.top = (pointer ? event.clientY - rect.top : rect.height / 2) / pageZoom + 'px';
     if (getComputedStyle(control).position === 'static') control.classList.add('lat-ripple-static');
     control.classList.add('lat-ripple-host');
     control.append(dot);
@@ -96,9 +97,10 @@
     }
     position();
     const now = pill.getBoundingClientRect();
+    const pageZoom = parseFloat(getComputedStyle(document.body).zoom) || 1;
     if (previous && previous.href !== active.getAttribute('href') && now.width && window.innerWidth > 740) {
       animate(pill, [
-        {transform: `translateY(${previous.rect.top - now.top}px)`, opacity: .85},
+        {transform: `translateY(${(previous.rect.top - now.top) / pageZoom}px)`, opacity: .85},
         {transform: 'translateY(0)', opacity: 1}
       ], {duration: 340});
     }
