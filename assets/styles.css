@@ -209,3 +209,6 @@ html[data-theme="dark"] .study-question .study-option input[type="radio"][data-r
   .attempt-row:has(.assessment-feedback) > .attempt-copy { flex-basis: calc(100% - 60px); }
   .attempt-row:has(.assessment-feedback) > .attempt-result { flex-basis: 100%; align-items: flex-start; }
 }
+
+.lecture-reading ol, .lesson-content ol { padding-left: 1.6em; margin: 1em 0; }
+.lecture-reading :not(pre) > code, .lesson-content :not(pre) > code { font-family: var(--mono); font-size: .9em; padding: .1em .3em; border-radius: 4px; background: var(--mint); }

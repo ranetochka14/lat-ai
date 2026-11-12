@@ -51,19 +51,42 @@
   window.LATLearning = { settings: learningPreferences };
   // Render text, never model HTML. Preserve code and explicit lists; split long prose by sentences.
   function lectureText(value) {
+    // A deliberately small Markdown subset. Never render HTML, links or images.
+    const inline = text => String(text).split(/(`[^`\n]+`|\*\*[^*\n]+\*\*)/g).map(part =>
+      part.startsWith('`') && part.endsWith('`') ? `<code>${escape(part.slice(1,-1))}</code>` :
+      part.startsWith('**') && part.endsWith('**') ? `<strong>${escape(part.slice(2,-2))}</strong>` : escape(part)).join('');
+    const paragraph = text => {
+      if (text.length < 380 || /\n|:=|[{}]|^\s*(if |for |def |print\()/.test(text)) return `<p class="preserve-lines">${inline(text)}</p>`;
+      const sentences = [...new Intl.Segmenter('ru', {granularity:'sentence'}).segment(text)].map(s => s.segment);
+      const result = [];
+      for (let i=0; i<sentences.length; i+=3) result.push(`<p>${inline(sentences.slice(i,i+3).join(''))}</p>`);
+      return result.join('');
+    };
     const blocks = String(value ?? '').replace(/\r\n?/g, '\n').split(/(```[^]*?```)/g);
     return blocks.map(block => {
       if (block.startsWith('```') && block.endsWith('```')) return `<pre><code>${escape(block.slice(3,-3).replace(/^[a-z]+\n/i,''))}</code></pre>`;
-      return block.split(/\n\s*\n/).filter(p => p.trim()).map(p => {
-        const lines = p.trim().split('\n');
-        if (lines.every(line => /^\s*[-*•]\s+/.test(line))) return `<ul>${lines.map(line => `<li>${escape(line.replace(/^\s*[-*•]\s+/,''))}</li>`).join('')}</ul>`;
-        if (/^#{1,3} [^\n]+$/.test(p)) return `<h3>${escape(p.replace(/^#+ /,''))}</h3>`;
-        if (p.length < 380 || /\n|:=|[{}]|^\s*(if |for |def |print\()/.test(p)) return `<p class="preserve-lines">${escape(p)}</p>`;
-        const sentences = [...new Intl.Segmenter('ru', {granularity:'sentence'}).segment(p)].map(s => s.segment);
-        const paragraphs = [];
-        for (let i=0; i<sentences.length; i+=3) paragraphs.push(`<p>${escape(sentences.slice(i,i+3).join(''))}</p>`);
-        return paragraphs.join('');
-      }).join('');
+      const result = [], pending = [];
+      const flush = () => { if (pending.length) result.push(paragraph(pending.splice(0).join('\n'))); };
+      const lines = block.split('\n');
+      for (let i=0; i<lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) { flush(); continue; }
+        const heading = /^#{1,6}\s+(.+)$/.exec(line);
+        if (heading) { flush(); result.push(`<h3>${inline(heading[1])}</h3>`); continue; }
+        const ordered = /^\d+[.)]\s+/.test(line), bullet = /^[-*•]\s+/.test(line);
+        if (ordered || bullet) {
+          flush();
+          const pattern = ordered ? /^\d+[.)]\s+/ : /^[-*•]\s+/;
+          const tag = ordered ? 'ol' : 'ul', items = [];
+          const start = ordered ? ` start="${Math.min(100000, Number.parseInt(line,10))}"` : '';
+          do { items.push(`<li>${inline(lines[i].trim().replace(pattern,''))}</li>`); i++; }
+          while (i < lines.length && pattern.test(lines[i].trim()));
+          i--;
+          result.push(`<${tag}${start}>${items.join('')}</${tag}>`);
+        } else pending.push(line);
+      }
+      flush();
+      return result.join('');
     }).join('');
   }
   function groupedAttempts(attempts) {
