@@ -112,6 +112,8 @@ def apply_reply(pack, reply, recovery):
         if error is not None:
             raise InvalidStudyResult('unexpected worker error')
         check_result(result, pack.mode, pack.source_text)
+        if pack.generation_options and len(result['questions']) != pack.generation_options['question_count']:
+            raise InvalidStudyResult('wrong question count')
         persist(pack, StudyPack.Status.READY, result=result)
         return False
     if result is not None:
@@ -134,6 +136,8 @@ def apply_reply(pack, reply, recovery):
 
 def process_pack(pack, recovery=False):
     body = {'request_id': str(pack.request_id), 'mode': pack.mode, 'source_text': pack.source_text}
+    if pack.generation_options:
+        body['generation_options'] = pack.generation_options
     endpoint = '/study/receipt' if recovery else '/study'
     try:
         reply = call_study(endpoint, body, {'actor_id': str(pack.owner_id)})

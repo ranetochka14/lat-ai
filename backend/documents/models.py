@@ -136,6 +136,7 @@ class StudyPack(models.Model):
     document = models.ForeignKey(Document, on_delete=models.CASCADE, related_name='study_packs')
     request_id = models.UUIDField()
     mode = models.CharField(max_length=6, choices=Mode.choices)
+    generation_options = models.JSONField(default=dict)
     source_start = models.PositiveIntegerField()
     source_end = models.PositiveIntegerField()
     source_text = models.TextField()

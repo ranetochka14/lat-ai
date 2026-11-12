@@ -5,8 +5,11 @@
     constructor(ids) { this.ids={...ids};this.code='';this.revision=0;this.selection=null;this.latest=null; }
     edit(code) { if(code!==this.code){this.code=code;this.revision++;this.selection=null;} }
     select(start,end) { this.selection=start<end?{start,end}:null; }
-    begin(action,question) {
+    begin(action,question,style) {
       if(!question.trim()||question.length>2000)throw Error('Напиши вопрос длиной до 2000 символов.');
+      const suffix=style==='brief'?'\nОтветь кратко, по сути.':style==='step_by_step'?'\nОбъясни по шагам, не раскрывая готовое решение в подсказке.':'';
+      if(question.length+suffix.length>2000)throw Error('Сократи вопрос до 1900 символов, чтобы добавить выбранный стиль ответа.');
+      question+=suffix;
       if(this.code.length>4000)throw Error('Код длиннее 4000 символов. Он не будет обрезан.');
       this.latest={contract_version:'1.0',request_id:crypto.randomUUID(),action,question,...this.ids,
         code_context:{code:this.code,revision:this.revision,selection:this.selection?{...this.selection}:null}};
@@ -29,11 +32,11 @@
     const session=new EditorSession(ids);session.edit(editor.value);
     panel.append(element('h3','Спросить о коде'),element('p','Код выше прикладывается автоматически. Выдели нужные строки, если вопрос только о них.','subtle'));
     const context=element('p',null,'ai-context'),preview=element('pre',null,'ai-selection'),clear=element('button','Снять выделение','button secondary');clear.type='button';
-    const question=element('textarea');question.rows=2;question.maxLength=2000;question.placeholder='Что непонятно?';question.setAttribute('aria-label','Вопрос помощнику');
+    const question=element('textarea');question.rows=2;question.maxLength=1900;question.placeholder='Что непонятно?';question.setAttribute('aria-label','Вопрос помощнику');
     const buttons=element('div',null,'ai-actions'),ask=element('button','Объясни','button primary'),hint=element('button','Дай подсказку','button secondary'),retry=element('button','Повторить этот запрос','button secondary');
     for(const b of [ask,hint,retry])b.type='button';hint.hidden=!info.hint_supported;retry.hidden=true;buttons.append(ask,hint,retry);
     const state=element('p',null,'ai-state'),output=element('div',null,'ai-answer');state.setAttribute('role','status');output.setAttribute('aria-live','polite');
-    panel.append(context,preview,clear,question,buttons,state,output,element('p','Режим ручной проверки взрослыми. Код не запускается помощником.','small-note'));form.after(panel);
+    panel.append(context,preview,clear,question,buttons,state,output,element('p','ИИ может ошибаться. Код не запускается помощником.','small-note'));form.after(panel);
     let displayed=null;
     function describe(){
       const sel=session.selection;
@@ -60,7 +63,7 @@
       }catch(error){if(panel.isConnected){state.textContent=error.message||'Не удалось получить ответ.';retry.hidden=Boolean(error.status);}}
       finally{if(panel.isConnected)ask.disabled=hint.disabled=retry.disabled=false;}
     }
-    function begin(action){try{session.edit(editor.value);send(session.begin(action,question.value));}catch(error){state.textContent=error.message;}}
+    function begin(action){try{session.edit(editor.value);send(session.begin(action,question.value,global.LATLearning?.settings().answer_detail));}catch(error){state.textContent=error.message;}}
     ask.addEventListener('click',()=>begin('explain'));
     hint.addEventListener('click',()=>{if(!question.value.trim())question.value='Подскажи следующий шаг, не решая за меня.';begin('hint');});
     retry.addEventListener('click',()=>send(session.retry()));

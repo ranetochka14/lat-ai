@@ -84,13 +84,13 @@ export class Tutor {
   return done();
  }
 
- async study({mode,source_text}){
-  const generated=await this.#generate({role:'study',mode,source_text},performance.now(),STUDY_BUDGET_MS,3072);
+ async study({mode,source_text,generation_options}){
+  const generated=await this.#generate({role:'study',mode,source_text,...(generation_options?{generation_options}:{})},performance.now(),STUDY_BUDGET_MS,generation_options?768*(generation_options.question_count+1):3072);
   if(generated.reason!=='ok'){
    return {status:generated.uncertain?'unknown':'failed',result:null,error_code:generated.reason};
   }
   try{
-   const result=validateStudyOutput(generated.raw,{mode,source_text});
+   const result=validateStudyOutput(generated.raw,{mode,source_text,generation_options});
    if(Number.isInteger(generated.raw.hint_fallbacks)){
     try{this.log({type:'study_verification',hint_fallbacks:generated.raw.hint_fallbacks,hint_repairs:generated.raw.hint_repairs??0,hint_refinements:generated.raw.hint_refinements??0,feedback_verified:generated.raw.feedback_verified===true,...(generated.raw.stats??{})});}catch{}
    }

@@ -63,7 +63,7 @@ export class LocalModel{
    const output=extra=>({...candidate,...extra,stats:Object.fromEntries(['input_tokens','total_output_tokens','reasoning_output_tokens'].map(key=>[key,phases.every(phase=>Number.isFinite(phase.stats?.[key]))?phases.reduce((sum,phase)=>sum+phase.stats[key],0):null]))});
    const check=async study=>{
     options.signal.throwIfAborted();
-    const response=await this.#generateOnce(req,{...options,maxTokens:1024,study,verification:true});
+    const response=await this.#generateOnce(req,{...options,maxTokens:req.generation_options?384*req.generation_options.question_count:1024,study,verification:true});
     phases.push(response);return response;
    };
    let result;

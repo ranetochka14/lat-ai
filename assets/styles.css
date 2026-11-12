@@ -180,6 +180,27 @@ html[data-theme="dark"] .study-question .study-option input[type="radio"][data-r
 .assessment-group li + li { margin-top: 7px; }
 .last-attempt > .assessment-feedback { margin-top: 14px; }
 .last-attempt > span + span { font-size: 16px; font-weight: 600; }
+.ai-disclaimer { font-size: 12px; color: var(--slate); }
+.friendly-footer { gap: 16px; flex-wrap: wrap; }
+.lecture-reading, .lesson-content { max-width: 72ch; line-height: 1.85; overflow-wrap: anywhere; }
+.lecture-reading p + p, .lesson-content p + p { margin-top: 1.2em; }
+.lecture-reading h3, .lesson-content h3 { margin: 1.5em 0 .65em; }
+.lecture-reading ul, .lesson-content ul { padding-left: 1.4em; margin: 1em 0; }
+.lecture-reading li + li, .lesson-content li + li { margin-top: .5em; }
+.lecture-reading pre, .lesson-content pre { padding: 20px; border-radius: 12px; background: var(--mint); overflow: auto; white-space: pre; }
+.study-stack > article.study-block { padding: clamp(20px, 4vw, 40px); border-left: 4px solid var(--teal); }
+.study-stack > article.study-block > h3 { font-size: 25px; margin-bottom: 20px; }
+.study-result-heading > strong { display: flex; align-items: center; gap: 10px; font-size: 23px; }
+.study-result-heading > strong .icon { width: 28px; height: 28px; }
+.study-result-heading { margin-bottom: 12px; }
+.study-result-pending { background: var(--mint); }
+.last-attempt:empty { display: none; }
+.last-attempt { display: block; padding: 0; background: transparent; }
+.last-attempt .study-result { margin: 20px 0; }
+.attempt-history { padding: 0 20px 20px; border-bottom: 1px solid var(--line); }
+.attempt-history > summary { color: var(--teal); cursor: pointer; font-size: 14px; }
+.attempt-history[open] { background: var(--mint); }
+.study-mode + select { margin-bottom: 16px; }
 @media (max-width: 600px) {
   .study-question .study-option { padding: 12px; }
   .study-question .button-row > .button { white-space: normal; }

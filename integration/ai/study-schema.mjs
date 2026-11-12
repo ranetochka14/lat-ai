@@ -17,7 +17,7 @@ question.properties.option_explanations={type:'array',minItems:4,maxItems:4,item
 const schemas=Object.fromEntries(['course','test'].map(mode=>[mode,object({
  title:text(160),
  lessons:{type:'array',minItems:mode==='course'?1:0,maxItems:mode==='course'?3:0,items:lesson},
- questions:{type:'array',minItems:3,maxItems:6,items:question}
+ questions:{type:'array',minItems:3,maxItems:7,items:question}
 })]));
 // The model binds feedback to option identity rather than relying on parallel
 // array positions. The persisted/public shape remains string[4].
@@ -73,22 +73,25 @@ export const studySystem=[
  'Write option_explanations as exactly four records {option, feedback}. Copy each option string EXACTLY into its record once; write feedback for THAT option beside it. Do not rely on ordering or put feedback under a different option. Feedback is plain prose, not serialized JSON:1–2 concise sentences in the source language. For the correct option explain the rule that makes it correct. For each wrong option explain its specific misconception or mismatch with the question and the supported rule. Do not invent facts about a distractor that the excerpt does not support; explain why the excerpt does not establish it. Do not merely label an option incorrect, repeat the correct answer, or duplicate a quote. There is no separate general explanation field; write each piece of feedback once. Return only the structured JSON in plain text.'
 ].join(' ');
 
-export function studyGeneration({mode,source_text}){
+export function studyGeneration({mode,source_text,generation_options}){
  const candidates=quoteCandidates(source_text);
  const schema=structuredClone(generationSchemas[mode]);
  const properties=schema.properties;
- properties.questions.maxItems=3;
+ const count=generation_options?.question_count??3;
+ properties.questions.minItems=properties.questions.maxItems=count;
  if(mode==='course')properties.lessons.maxItems=1;
  for(const key of ['lessons','questions']){
   properties[key].items.properties.source_quote={type:'string',enum:candidates};
  }
- return {system:studySystem,input:{mode,source_text,quote_candidates:candidates},schema};
+ const detail=generation_options?.detail==='detailed'?'Use short paragraphs with a concept, explanation and a source-supported example when available. Explain each option in two concise sentences.':'Use short paragraphs and concise explanations, one sentence per option.';
+ const system=generation_options?studySystem.replace('In course mode write one lesson with 3–5 concise sentences covering the facts needed for all three questions. In test mode write no lessons. Write exactly three distinct single-choice questions.',`In course mode write one lesson covering the facts needed for all ${count} questions. In test mode write no lessons. Write exactly ${count} distinct single-choice questions. ${detail}`):studySystem;
+ return {system,input:{mode,source_text,quote_candidates:candidates},schema};
 }
 
 export function validateStudyGeneration(raw,request){
  if(raw?.finish_reason!=='stop'||typeof raw.answer!=='string')throw Error('incomplete study output');
  const result=JSON.parse(raw.answer);
- if(!generationValidators[request.mode]?.(result)||!uniqueMembers(raw,result))throw Error('invalid study option binding');
+ if((request.generation_options && result.questions?.length!==request.generation_options.question_count)||!generationValidators[request.mode]?.(result)||!uniqueMembers(raw,result))throw Error('invalid study option binding');
  for(const question of result.questions){
   const records=question.option_explanations;
   if(new Set(records.map(record=>record.option)).size!==4||records.some(record=>!question.options.includes(record.option)))throw Error('invalid study option binding');
@@ -204,10 +207,10 @@ export function studyEliminationHints(candidate){
   return null;
  });
 }
-export function validateStudyOutput(raw,{mode,source_text},{requireOptionExplanations=false}={}){
+export function validateStudyOutput(raw,{mode,source_text,generation_options},{requireOptionExplanations=false}={}){
  if(raw?.finish_reason!=='stop'||typeof raw.answer!=='string')throw Error('incomplete study output');
  const result=JSON.parse(raw.answer);
- if(!Object.hasOwn(validators,mode)||!validators[mode](result)||
+ if((generation_options && result.questions?.length!==generation_options.question_count)||!Object.hasOwn(validators,mode)||!validators[mode](result)||
   ![result.title,...result.lessons.flatMap(Object.values),
    ...result.questions.flatMap(item=>Object.values(item).flat())].every(validText)||
   !distinct(result.questions.map(item=>item.prompt))||

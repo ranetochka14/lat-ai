@@ -5,7 +5,7 @@ const reply=(body,status=200)=>({status,body});
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function identity(input,resolved){
- if(!input||Object.keys(input).sort().join(',')!=='mode,request_id,source_text'||
+ if(!input||!['mode,request_id,source_text','generation_options,mode,request_id,source_text'].includes(Object.keys(input).sort().join(','))||
   !resolved||Object.keys(resolved).join(',')!=='actor_id'||
   typeof resolved.actor_id!=='string'||!resolved.actor_id.trim()||
   typeof input.request_id!=='string'||!uuid.test(input.request_id)||
@@ -13,14 +13,16 @@ function identity(input,resolved){
   input.source_text.length>12000||!input.source_text.isWellFormed()||input.source_text.includes('\0')||!input.source_text.trim()){
   throw Error('invalid study request');
  }
- const {mode,source_text}=input;
+ const {mode,source_text,generation_options}=input;
+ if('generation_options' in input && (!generation_options || Object.keys(generation_options).sort().join(',')!=='detail,question_count' || ![5,6,7].includes(generation_options.question_count) || !['concise','detailed'].includes(generation_options.detail)))throw Error('invalid generation options');
+ const options=generation_options?{generation_options:{question_count:generation_options.question_count,detail:generation_options.detail}}:{};
  const length=Array.from(source_text).length;
  if(length<100||length>6000)throw Error('invalid study source length');
  return {
   actor:resolved.actor_id,
   rid:input.request_id.toLowerCase(),
-  digest:createHash('sha256').update(JSON.stringify([mode,source_text])).digest('hex'),
-  input:{mode,source_text}
+  digest:createHash('sha256').update(JSON.stringify(generation_options?[mode,source_text,options.generation_options]:[mode,source_text])).digest('hex'),
+  input:{mode,source_text,...options}
  };
 }
 
