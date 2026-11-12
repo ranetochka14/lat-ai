@@ -12,7 +12,7 @@ const body=(extra={})=>({contract_version:'1.0',request_id:randomUUID(),action:'
 const resolved=(extra={})=>({actor_id:1,access:'granted',course_id:1,lesson_id:2,exercise_id:3,lesson_key:'L1',topic:'types',task_key:'L1.types.1',mapping_version:'test-v1',hint_events:[],...extra});
 function setup(t,tutor=new Tutor()) {
  assert.equal(typeof implementation.createBridge,'function','persistent bridge must be implemented');
- const dir=mkdtempSync(join(tmpdir(),'lad-i02-'));
+ const dir=mkdtempSync(join(tmpdir(),'lat-ai-i02-'));
  const bridge=implementation.createBridge({dbPath:join(dir,'ai.sqlite3'),tutor});
  t.after(()=>{bridge.close();rmSync(dir,{recursive:true,force:true});});
  return {bridge,dir};

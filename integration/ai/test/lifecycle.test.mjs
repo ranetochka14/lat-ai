@@ -11,7 +11,7 @@ const answer={choices:[{message:{content:JSON.stringify({text:'Кавычки о
 const deferred=()=>{let resolve;const promise=new Promise(r=>resolve=r);return {promise,resolve};};
 async function setup(t,{failUnload=false,blockedLoad=false,failReadiness=false}={}){
  assert.equal(typeof impl.createLifecycle,'function','operator recovery lifecycle must exist');
- const dir=mkdtempSync(join(tmpdir(),'lad-l01-'));t.after(()=>rmSync(dir,{recursive:true,force:true}));
+ const dir=mkdtempSync(join(tmpdir(),'lat-ai-l01-'));t.after(()=>rmSync(dir,{recursive:true,force:true}));
  const lock=join(dir,'lock'),loaded=new Set(['foreign-model']),unloads=[],posts=[];
  const dispatched=deferred(),gate=deferred();let hold=false;
  const loadOwned=options=>LocalModel.loadOwned({...options,lockPath:lock,recoveryDelayMs:0,

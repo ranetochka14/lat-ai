@@ -41,17 +41,17 @@ def main():
     for path in files:
         data = path.read_bytes()
         entries.append({'path': path.relative_to(ROOT).as_posix(), 'bytes': len(data), 'sha256': sha256(data).hexdigest()})
-    manifest = {'format': 1, 'release': 'LAD AI document pilot 2026-11-11',
+    manifest = {'format': 1, 'release': 'LAT AI document pilot 2026-11-11',
                 'kind': 'source-only; install requirements; use existing local model separately', 'files': entries}
     with zipfile.ZipFile(output, 'x', compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
         for item, path in zip(entries, files):
-            archive.write(path, 'LAD-AI-Document-Pilot/' + item['path'])
-        archive.writestr('LAD-AI-Document-Pilot/MANIFEST.json', json.dumps(manifest, ensure_ascii=False, indent=2).encode('utf-8'))
+            archive.write(path, 'LAT-AI-Document-Pilot/' + item['path'])
+        archive.writestr('LAT-AI-Document-Pilot/MANIFEST.json', json.dumps(manifest, ensure_ascii=False, indent=2).encode('utf-8'))
     with zipfile.ZipFile(output) as archive:
         if archive.testzip() is not None or len(archive.namelist()) != len(entries) + 1:
             raise ValueError('Archive CRC or entry-count verification failed')
         for item in entries:
-            data = archive.read('LAD-AI-Document-Pilot/' + item['path'])
+            data = archive.read('LAT-AI-Document-Pilot/' + item['path'])
             if len(data) != item['bytes'] or sha256(data).hexdigest() != item['sha256']:
                 raise ValueError('Archive content verification failed: ' + item['path'])
         if not all('..' not in Path(name).parts and not Path(name).is_absolute() for name in archive.namelist()):

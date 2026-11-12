@@ -45,12 +45,12 @@ test('new generation requires four bounded option explanations while historical 
  }
 });
 function folder(t){
- const path=mkdtempSync(join(tmpdir(),'lad-study-'));
+ const path=mkdtempSync(join(tmpdir(),'lat-ai-study-'));
  t.after(()=>rmSync(path,{recursive:true,force:true}));
  return path;
 }
 function journal(t,tutor){
- const path=mkdtempSync(join(tmpdir(),'lad-study-journal-'));
+ const path=mkdtempSync(join(tmpdir(),'lat-ai-study-journal-'));
  const dbPath=join(path,'replay.sqlite');
  let bridge;
  t.after(()=>{bridge?.close();rmSync(path,{recursive:true,force:true});});
@@ -104,7 +104,7 @@ test('restart exposes a pending dispatch as unknown and never re-POSTs it',async
 });
 
 test('killed worker leaves a durable pending receipt before model dispatch can complete',async t=>{
- const path=mkdtempSync(join(tmpdir(),'lad-study-crash-'));
+ const path=mkdtempSync(join(tmpdir(),'lat-ai-study-crash-'));
  const dbPath=join(path,'crash.sqlite');
  const body=request(),child=fork(new URL('./study-crash.fixture.mjs',import.meta.url),[dbPath,JSON.stringify(body)],{stdio:['ignore','ignore','ignore','ipc']});
  t.after(()=>child.kill());

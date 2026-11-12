@@ -42,7 +42,7 @@ catalog=[
   ('L2.accumulator.1','накопитель','Сохраняем сумму','Проследи, где создаётся s и как она меняется. Объясни роль отступа последней строки.','s = 0\nfor i in range(1, 4):\n    s = s + i\nprint(s)')])]
 contexts={};ids=[]
 with transaction.atomic():
-    User.objects.create_user('review@lad-ai.local','LadAI-Review-2026!',display_name='Взрослый оценщик')
+    User.objects.create_user('review@lat-ai.local','LatAI-Review-2026!',display_name='Взрослый оценщик')
     course=Course.objects.create(title='Python · автопроверка LAT AI',subject='Программирование',is_published=True,description='Примеры L1/L2 с автоматическими подсказками, оценкой и прогрессом. Пилот: ИИ может ошибаться.')
     for order,(key,title,tasks) in enumerate(catalog,1):
         lesson=Lesson.objects.create(course=course,title=title,content=materials[key],order=order)

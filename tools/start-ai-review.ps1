@@ -31,6 +31,6 @@ if ($EnableModel) {
     $null = Invoke-RestMethod 'http://127.0.0.1:8372/control' -Method Post -ContentType 'application/json' -Headers $headers -Body '{"action":"enable"}' -TimeoutSec 150
 }
 Write-Host 'LAT AI manual review: http://127.0.0.1:5173/#/courses'
-Write-Host 'Isolated adult test account: review@lad-ai.local / LadAI-Review-2026!'
+Write-Host 'Isolated adult test account: review@lat-ai.local / LatAI-Review-2026!'
 Write-Host 'Model responses are unverified; hints are from the catalogue. No code execution.'
 if (-not $NoBrowser) { Start-Process 'http://127.0.0.1:5173/#/courses' }
