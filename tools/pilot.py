@@ -121,7 +121,7 @@ def run(args, runtime):
             # LM Studio must already serve the existing local model files. No downloads.
             ipc(runtime, args.worker_port, 'enable', 150)
             enabled = True
-        print(f'LAD AI: http://127.0.0.1:{args.site_port}/#/documents', flush=True)
+        print(f'LAT AI: http://127.0.0.1:{args.site_port}/#/documents', flush=True)
         print(f'API: http://127.0.0.1:{args.api_port}/api/v1 | Admin: http://127.0.0.1:{args.api_port}/admin/', flush=True)
         print(f'Logs: {logdir}\nStop with Ctrl+C. Other services are never stopped.', flush=True)
         while all(p.poll() is None for p in processes.values()):

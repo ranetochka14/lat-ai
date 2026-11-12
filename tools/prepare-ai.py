@@ -43,7 +43,7 @@ catalog=[
 contexts={};ids=[]
 with transaction.atomic():
     User.objects.create_user('review@lad-ai.local','LadAI-Review-2026!',display_name='Взрослый оценщик')
-    course=Course.objects.create(title='Python · автопроверка LAD AI',subject='Программирование',is_published=True,description='Примеры L1/L2 с автоматическими подсказками, оценкой и прогрессом. Пилот: ИИ может ошибаться.')
+    course=Course.objects.create(title='Python · автопроверка LAT AI',subject='Программирование',is_published=True,description='Примеры L1/L2 с автоматическими подсказками, оценкой и прогрессом. Пилот: ИИ может ошибаться.')
     for order,(key,title,tasks) in enumerate(catalog,1):
         lesson=Lesson.objects.create(course=course,title=title,content=materials[key],order=order)
         contexts[f'{course.id}:{lesson.id}:0']={'lesson_key':key,'topic':tasks[0][1],'task_key':None,'digest':content_digest(course,lesson)}

@@ -156,10 +156,10 @@ try {
         throw 'This runtime setup supports 64-bit Windows only.'
     }
     if (-not (Test-Path -LiteralPath $requirementsFile -PathType Leaf)) {
-        throw "Backend requirements were not found: $requirementsFile. Extract the complete LAT-AI ZIP, including backend and tools."
+        throw "Backend requirements were not found: $requirementsFile. Extract the complete LAT AI ZIP, including backend and tools."
     }
     if (-not (Test-Path -LiteralPath $constraintsFile -PathType Leaf)) {
-        throw "Local compatibility constraints were not found: $constraintsFile. Extract the complete LAT-AI ZIP."
+        throw "Local compatibility constraints were not found: $constraintsFile. Extract the complete LAT AI ZIP."
     }
 
     Write-Host "LAT AI local runtime: $runtimeRoot"
