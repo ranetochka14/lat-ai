@@ -100,7 +100,7 @@ SETUP_PILOT.cmd
 
 ## Проверки
 
-Проверки не требуют живой модели. Набор включает 155 тестов: 106 Node, 40 Django и 9 для интерфейса. Проверяйте не только итог `OK`, но и пропуски: без необязательных парсеров PDF/DOCX/PPTX три Django-теста будут отмечены как `skipped`.
+Проверки не требуют живой модели. В прогоне 12.11.2026 обнаружено 173 теста: 110 Node, 50 Django и 13 для интерфейса. Прошли 170; три Django-теста пропущены из-за отсутствующих необязательных парсеров PDF/DOCX/PPTX. Ошибок нет. Все 20 SHA ядра совпали. Проверяйте не только итог `OK`, но и пропуски.
 
 ```bat
 npm --prefix integration/ai ci --ignore-scripts
@@ -108,7 +108,7 @@ npm --prefix integration/ai test
 node integration/ai/check.mjs
 node --test tests/document-pilot-frontend.test.cjs
 .venv\Scripts\python.exe -B tools/pilot.py --runtime .runtime/verify prepare
-.venv\Scripts\python.exe -B tools/pilot.py --runtime .runtime/verify manage test tutor progress documents
+.venv\Scripts\python.exe -B tools/pilot.py --runtime .runtime/verify manage test tutor progress documents courses
 ```
 
 Отдельный `--runtime .runtime/verify` обязателен: не подставляйте действующий runtime. Тесты проверяют формат, контракты и поведение кода, но не педагогическое качество ответов ИИ. Порядок запуска — в [руководстве запуска](docs/dev/runbook.md), результаты предыдущих проверок — в [истории проверок](docs/dev/testing.md). Свежие результаты изменений приводятся в соответствующих PR.
