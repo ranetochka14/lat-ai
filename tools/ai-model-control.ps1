@@ -2,7 +2,7 @@ param([ValidateSet('status','enable','disable','retire')][string]$Action='status
 $ErrorActionPreference='Stop'
 $projectDir=Split-Path -Parent $PSScriptRoot
 $secretPath=Join-Path $projectDir '.runtime/i02/ipc-secret.txt'
-$headers=@{'X-LAD-IPC'=(Get-Content -LiteralPath $secretPath -Raw).Trim()}
+$headers=@{'X-LAT-IPC'=(Get-Content -LiteralPath $secretPath -Raw).Trim()}
 if($Action -eq 'status') {
     $state=Invoke-RestMethod 'http://127.0.0.1:8372/health' -Headers $headers -TimeoutSec 3
 } else {

@@ -54,8 +54,8 @@ test('receipt HTTP route has the same private IPC boundary and never calls infer
  await new Promise(r=>server.listen(0,'127.0.0.1',r));t.after(()=>server.close());
  const url='http://127.0.0.1:'+server.address().port+'/assess/receipt';const payload=JSON.stringify({body:body(),resolved});
  const request=headers=>fetch(url,{method:'POST',headers:{'Content-Type':'application/json',...headers},body:payload});
- assert.equal((await request({})).status,401);assert.equal((await request({'X-LAD-IPC':secret,Origin:'https://foreign.test'})).status,403);
- assert.equal((await request({'X-LAD-IPC':secret})).status,200);assert.equal(lookups,1);assert.equal(calls,0);
+ assert.equal((await request({})).status,401);assert.equal((await request({'X-LAT-IPC':secret,Origin:'https://foreign.test'})).status,403);
+ assert.equal((await request({'X-LAT-IPC':secret})).status,200);assert.equal(lookups,1);assert.equal(calls,0);
 });
 test('actual child-process termination after stub dispatch leaves durable pending without retry',async()=>{
  const dir=mkdtempSync(join(tmpdir(),'lat-crash-receipt-')),file=join(dir,'journal.sqlite3'),requestId=randomUUID();

@@ -1,6 +1,6 @@
 Document pilot Node and Python hint verification, 2026-11-11
 
-POST /study and POST /study/receipt use X-LAD-IPC and {body,resolved}.
+POST /study and POST /study/receipt use X-LAT-IPC and {body,resolved}.
 body = {request_id,mode,source_text}
 resolved = {actor_id:string}
 Valid operational envelopes use HTTP 200 and {status,result,error_code}.

@@ -71,7 +71,7 @@ test('authenticated IPC joins concurrent duplicates and replays a completed resu
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  t.after(()=>{server.close();server.closeAllConnections();});
  const body=request(),url='http://127.0.0.1:'+server.address().port;
- const call=(route,secretValue=secret)=>fetch(url+route,{method:'POST',headers:{'Content-Type':'application/json','X-LAD-IPC':secretValue},body:JSON.stringify({body,resolved:actor})});
+ const call=(route,secretValue=secret)=>fetch(url+route,{method:'POST',headers:{'Content-Type':'application/json','X-LAT-IPC':secretValue},body:JSON.stringify({body,resolved:actor})});
  assert.equal((await call('/study','wrong')).status,401);
  const dispatch=call('/study');
  assert.equal(await Promise.race([sent.promise.then(()=>null),dispatch.then(response=>response.status)]),null);

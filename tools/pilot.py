@@ -44,7 +44,7 @@ def ipc(runtime, port, action=None, timeout=5):
     secret = (runtime / 'ipc-secret.txt').read_text(encoding='utf-8').strip()
     data = json.dumps({'action': action}).encode() if action else None
     req = Request(f'http://127.0.0.1:{port}/' + ('control' if action else 'health'), data=data,
-                  headers={'Content-Type': 'application/json', 'X-LAD-IPC': secret})
+                  headers={'Content-Type': 'application/json', 'X-LAT-IPC': secret})
     with build_opener(ProxyHandler({}), NoRedirect()).open(req, timeout=timeout) as response:
         return json.load(response)
 

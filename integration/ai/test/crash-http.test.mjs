@@ -18,7 +18,7 @@ async function start(dir){
 }
 function post(port,input){
  let req;
- const result=new Promise(resolve=>{req=http.request({host:'127.0.0.1',port,path:'/ask',method:'POST',headers:{'Content-Type':'application/json','X-LAD-IPC':'t'.repeat(64)}},res=>{let body='';res.on('data',x=>body+=x);res.on('end',()=>resolve({status:res.statusCode,body:JSON.parse(body)}));});req.on('error',error=>resolve({error:error.code}));req.end(JSON.stringify(input));});
+ const result=new Promise(resolve=>{req=http.request({host:'127.0.0.1',port,path:'/ask',method:'POST',headers:{'Content-Type':'application/json','X-LAT-IPC':'t'.repeat(64)}},res=>{let body='';res.on('data',x=>body+=x);res.on('end',()=>resolve({status:res.statusCode,body:JSON.parse(body)}));});req.on('error',error=>resolve({error:error.code}));req.end(JSON.stringify(input));});
  return {req,result};
 }
 async function reached(dir){for(let i=0;i<150;i++){if(existsSync(join(dir,'calls.txt')))return;await wait(20);}throw Error('request never dispatched');}

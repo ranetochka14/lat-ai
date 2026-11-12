@@ -22,7 +22,7 @@ def _call(body, resolved, endpoint):
     if len(secret) < 32:
         raise RuntimeError('worker not configured')
     request = Request(f'http://127.0.0.1:{port}{endpoint}', data=json.dumps({'body':body,'resolved':resolved},ensure_ascii=True).encode('ascii'),
-                      headers={'Content-Type':'application/json','X-LAD-IPC':secret},method='POST')
+                      headers={'Content-Type':'application/json','X-LAT-IPC':secret},method='POST')
     opener = build_opener(ProxyHandler({}),NoRedirect())
     try:
         response = opener.open(request,timeout=9)

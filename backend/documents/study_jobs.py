@@ -56,7 +56,7 @@ def call_study(endpoint, body, resolved):
     data = json.dumps({'body': body, 'resolved': resolved}, ensure_ascii=True).encode('ascii')
     request = Request(
         f'http://127.0.0.1:{port}{endpoint}', data=data, method='POST',
-        headers={'Content-Type': 'application/json', 'X-LAD-IPC': secret},
+        headers={'Content-Type': 'application/json', 'X-LAT-IPC': secret},
     )
     opener = build_opener(ProxyHandler({}), NoRedirect())
     try:
