@@ -446,6 +446,8 @@
     if (value === null || !/^[0-3]$/.test(value)) throw new Error('Выбери один вариант ответа.');
     const choice = Number(value);
     const selectedOption = $(`.study-option input[value="${choice}"] + span`, form)?.textContent || `Вариант ${choice + 1}`;
+    const submittedInput = $(`.study-option input[value="${choice}"]`, form);
+    if (submittedInput) delete submittedInput.dataset.result;
     const identity = requestIdentity(['attempt', packId, question, choice]);
     const feedback = $('.study-feedback', form);
     const wasDisabled = [];
@@ -467,6 +469,7 @@
       }
       identity.finish();
       if (!form.isConnected) return;
+      if (submittedInput) submittedInput.dataset.result = result.correct ? 'correct' : 'incorrect';
       feedback.innerHTML = studyResult(result, selectedOption);
       // A replayed receipt may carry an older progress snapshot.
       const fresh = await api().studyPack(packId).catch(() => null);

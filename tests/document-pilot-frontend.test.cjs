@@ -117,7 +117,8 @@ test('study view escapes model text and uncertain grading never renders a score'
   const aggregate = {};
   const pack = { dataset: { id: '27', status: 'ready' }, querySelectorAll: () => [], querySelector: () => aggregate };
   const feedback = { innerHTML: '' };
-  const form = fakeForm('study-answer', { '.study-feedback': feedback });
+  const submittedInput = { dataset: {} };
+  const form = fakeForm('study-answer', { '.study-feedback': feedback, '.study-option input[value="0"]': submittedInput });
   form.dataset.question = 'q1';
   form.values = { choice: '0' };
   form.closest = () => pack;
@@ -137,10 +138,12 @@ test('study view escapes model text and uncertain grading never renders a score'
   await app.submit(form);
   assert.match(form.error.textContent, /Проверка ответа не подтверждена/);
   assert.equal(feedback.innerHTML, '');
+  assert.equal(submittedInput.dataset.result, undefined);
   await app.submit(form);
   assert.equal(calls[0].body.choice, 0);
   assert.equal(calls[0].body.request_id, calls[1].body.request_id);
   assert.match(feedback.innerHTML, /Неверно/);
+  assert.equal(submittedInput.dataset.result, 'incorrect');
   assert.match(feedback.innerHTML, /&lt;img src=x&gt;/);
   assert.match(feedback.innerHTML, /&lt;em&gt;quote&lt;\/em&gt;/);
   assert.doesNotMatch(feedback.innerHTML, /<img|<em>/);
@@ -181,9 +184,13 @@ async function gradeFixture(result) {
   const pack = { dataset: { id: '27', status: 'ready' }, querySelectorAll: () => [], querySelector: () => ({}) };
   const feedback = { innerHTML: '' };
   const answer = { textContent: '<b>GROUP BY</b>' };
+  const submittedInput = { dataset: {} };
+  const otherInput = { dataset: {} };
   const form = fakeForm('study-answer', {
     '.study-feedback': feedback,
-    '.study-option input[value="1"] + span': answer
+    '.study-option input[value="1"] + span': answer,
+    '.study-option input[value="1"]': submittedInput,
+    '.study-option input[value="2"]': otherInput
   });
   form.dataset.question = 'q1';
   form.values = { choice: '1' };
@@ -193,12 +200,15 @@ async function gradeFixture(result) {
     studyAttempt: async () => {
       // A changed selection while the request is pending must not relabel its receipt.
       answer.textContent = 'A DIFFERENT SELECTION';
+      form.values.choice = '2';
       return { max_score: 1, progress, ...result };
     }
   });
   await turn();
   await app.submit(form);
   assert.equal(form.error.textContent, '');
+  assert.equal(submittedInput.dataset.result, result.correct ? 'correct' : 'incorrect');
+  assert.equal(otherInput.dataset.result, undefined);
   return feedback.innerHTML;
 }
 

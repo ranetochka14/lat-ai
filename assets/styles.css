@@ -99,6 +99,16 @@
   border-color: var(--teal);
   background: var(--mint);
 }
+.study-question .study-option:has(input[data-result="incorrect"]:checked) {
+  background: #fff1ed;
+  border-color: #c65c4f;
+}
+.study-question .study-option input[type="radio"][data-result="incorrect"] { accent-color: #bd3b32; }
+html[data-theme="dark"] .study-question .study-option:has(input[data-result="incorrect"]:checked) {
+  background: #422c29;
+  border-color: #c7756a;
+}
+html[data-theme="dark"] .study-question .study-option input[type="radio"][data-result="incorrect"] { accent-color: #ff9b91; }
 .study-question .study-option:focus-within {
   outline: 3px solid var(--teal);
   outline-offset: 3px;
