@@ -136,7 +136,7 @@ class ExerciseAttemptListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         attempt = serializer.save(user=self.request.user)
-        if getattr(settings, 'LAD_AI_AUTOGRADE', False):
+        if getattr(settings, 'LAT_AI_AUTOGRADE', False):
             from .assessment import assess_attempt
             assess_attempt(attempt, update_lesson_progress)
 

@@ -29,10 +29,10 @@ def configure(args):
         sys.path.append(str(extra_site))
     runtime = Path(args.runtime or ROOT / '.runtime' / 'pilot').resolve()
     runtime.mkdir(parents=True, exist_ok=True)
-    os.environ.update(DJANGO_SETTINGS_MODULE='config.ai_local', LAD_AI_RUNTIME=str(runtime),
-                      LAD_AI_PORT=str(args.worker_port), LAD_FRONTEND_PORT=str(args.site_port),
+    os.environ.update(DJANGO_SETTINGS_MODULE='config.ai_local', LAT_AI_RUNTIME=str(runtime),
+                      LAT_AI_PORT=str(args.worker_port), LAT_FRONTEND_PORT=str(args.site_port),
                       PYTHONUTF8='1', PYTHONIOENCODING='utf-8', PYTHONNOUSERSITE='1')
-    os.environ.pop('LAD_AI_TEST', None)
+    os.environ.pop('LAT_AI_TEST', None)
     return runtime
 
 

@@ -6,15 +6,15 @@ import sys
 from pathlib import Path
 
 project=Path(__file__).resolve().parent.parent
-runtime=Path(os.environ.get('LAD_AI_RUNTIME', project/'.runtime'/'i02')).resolve()
+runtime=Path(os.environ.get('LAT_AI_RUNTIME', project/'.runtime'/'i02')).resolve()
 runtime.mkdir(parents=True,exist_ok=True)
 for name in ('ipc-secret.txt','django-secret.txt'):
     path=runtime/name
     if not path.exists():
         path.write_text(secrets.token_hex(32),encoding='utf-8')
 os.environ['DJANGO_SETTINGS_MODULE']='config.ai_local'
-os.environ['LAD_AI_RUNTIME']=str(runtime)
-os.environ.pop('LAD_AI_TEST',None)
+os.environ['LAT_AI_RUNTIME']=str(runtime)
+os.environ.pop('LAT_AI_TEST',None)
 sys.path.insert(0,str(project/'backend'))
 import django
 django.setup()

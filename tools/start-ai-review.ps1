@@ -12,8 +12,8 @@ $env:PYTHONUTF8 = '1'
 & $PythonExe (Join-Path $PSScriptRoot 'prepare-ai.py')
 if ($LASTEXITCODE -ne 0) { throw 'AI profile preparation failed.' }
 $env:DJANGO_SETTINGS_MODULE = 'config.ai_local'
-$env:LAD_AI_RUNTIME = $runtimeDir
-Remove-Item Env:LAD_AI_TEST -ErrorAction SilentlyContinue
+$env:LAT_AI_RUNTIME = $runtimeDir
+Remove-Item Env:LAT_AI_TEST -ErrorAction SilentlyContinue
 $nodeExe = (Get-Command node.exe).Source
 $workerProcess = Start-Process -FilePath $nodeExe -ArgumentList @('integration/ai/worker.mjs') -WorkingDirectory $projectDir -WindowStyle Hidden -RedirectStandardOutput (Join-Path $runtimeDir 'worker.stdout.log') -RedirectStandardError (Join-Path $runtimeDir 'worker.stderr.log') -PassThru
 $djangoProcess = Start-Process -FilePath $PythonExe -ArgumentList @('backend/manage.py','runserver','127.0.0.1:8000','--noreload') -WorkingDirectory $projectDir -WindowStyle Hidden -RedirectStandardOutput (Join-Path $runtimeDir 'django.stdout.log') -RedirectStandardError (Join-Path $runtimeDir 'django.stderr.log') -PassThru

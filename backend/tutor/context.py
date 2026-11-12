@@ -26,7 +26,7 @@ def resources(body):
 
 def mapping_for(course, lesson, exercise):
     try:
-        path = Path(getattr(settings,'LAD_AI_MAPPING', ''))
+        path = Path(getattr(settings,'LAT_AI_MAPPING', ''))
         if not path.is_file() or path.stat().st_size > 1000000:
             return None
         document = json.loads(path.read_text(encoding='utf-8'))

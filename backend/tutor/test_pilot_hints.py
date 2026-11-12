@@ -22,7 +22,7 @@ class PilotHintEvidenceTests(TestCase):
         self.digest = content_digest(self.course, self.lesson, self.exercise)
         self.task = 'L1.types.1'
         self.answer = 'Строки соединяются, вывод 32.'
-        temp = tempfile.TemporaryDirectory(dir=settings.LAD_AI_RUNTIME)
+        temp = tempfile.TemporaryDirectory(dir=settings.LAT_AI_RUNTIME)
         self.addCleanup(temp.cleanup)
         mapping = Path(temp.name) / 'mapping.json'
         mapping.write_text(json.dumps({
@@ -31,7 +31,7 @@ class PilotHintEvidenceTests(TestCase):
                 'lesson_key': 'L1', 'task_key': self.task, 'digest': self.digest,
             }},
         }), encoding='utf-8')
-        override = override_settings(LAD_AI_MAPPING=mapping)
+        override = override_settings(LAT_AI_MAPPING=mapping)
         override.enable()
         self.addCleanup(override.disable)
 

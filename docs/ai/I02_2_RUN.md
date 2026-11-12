@@ -51,7 +51,7 @@ Mapping создаётся для 2 уроков и 4 точных упражн�
 ## Проверки и журналы
 
 `npm --prefix integration/ai test`; `npm --prefix integration/ai run check`.
-Для Django задать `DJANGO_SETTINGS_MODULE=config.ai_local`, `LAD_AI_TEST=1`, затем `python backend/manage.py test tutor`. Перед обычным запуском удалить `LAD_AI_TEST` из окружения.
+Для Django задать `DJANGO_SETTINGS_MODULE=config.ai_local`, `LAT_AI_TEST=1`, затем `python backend/manage.py test tutor`. Перед обычным запуском удалить `LAT_AI_TEST` из окружения.
 `integration/ai/test/live-http.mjs` — отдельный сквозной прогон с синтетическими аккаунтами и живой моделью; по умолчанию в unit tests не входит.
 
 Оперативные журналы — `.runtime/i02/*.log` и `ai-runtime.jsonl`: без JWT, IPC-секрета, вопросов, кода и сырых модельных ответов. Приватный replay хранится отдельно. Синтетические ответы испытаний сохранены в отчёте I02.2 вне репозитория. Резерв не считается успехом модели; короткий живой smoke не заменяет L01, T01, S02, F01 и E01.

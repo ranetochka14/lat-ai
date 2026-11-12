@@ -19,10 +19,10 @@ class TutorBoundaryTests(TestCase):
         self.client = APIClient()
         self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + str(RefreshToken.for_user(self.user).access_token))
         self.body = dict(contract_version='1.0', request_id=str(uuid.uuid4()), action='explain', question='Почему так?', course_id=self.course.id, lesson_id=self.lesson.id, exercise_id=self.exercise.id, code_context={'code':'print("3" + "2")','revision':1,'selection':{'start':0,'end':5}})
-        self.directory = tempfile.TemporaryDirectory(dir=settings.LAD_AI_RUNTIME)
+        self.directory = tempfile.TemporaryDirectory(dir=settings.LAT_AI_RUNTIME)
         self.addCleanup(self.directory.cleanup)
         self.mapping = Path(self.directory.name) / 'mapping.json'
-        self.override = override_settings(LAD_AI_MAPPING=self.mapping)
+        self.override = override_settings(LAT_AI_MAPPING=self.mapping)
         self.override.enable(); self.addCleanup(self.override.disable)
 
     def test_authenticated_request_is_connected_not_501(self):

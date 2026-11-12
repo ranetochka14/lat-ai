@@ -15,10 +15,10 @@ def call_assessment(body, resolved):
     return _call(body, resolved, '/assess')
 
 def _call(body, resolved, endpoint):
-    port = getattr(settings,'LAD_AI_PORT',8372)
+    port = getattr(settings,'LAT_AI_PORT',8372)
     if type(port) is not int or not 1 <= port <= 65535:
         raise RuntimeError('invalid worker configuration')
-    secret = Path(settings.LAD_AI_SECRET_FILE).read_text(encoding='utf-8').strip()
+    secret = Path(settings.LAT_AI_SECRET_FILE).read_text(encoding='utf-8').strip()
     if len(secret) < 32:
         raise RuntimeError('worker not configured')
     request = Request(f'http://127.0.0.1:{port}{endpoint}', data=json.dumps({'body':body,'resolved':resolved},ensure_ascii=True).encode('ascii'),

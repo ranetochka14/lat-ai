@@ -7,8 +7,8 @@ const { pipeline } = require('node:stream');
 
 const ROOT = fs.realpathSync(__dirname);
 const HOST = '127.0.0.1';
-const PORT = Number(process.env?.LAD_FRONTEND_PORT || 5173);
-if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) throw new Error('Invalid LAD_FRONTEND_PORT');
+const PORT = Number(process.env?.LAT_FRONTEND_PORT || 5173);
+if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) throw new Error('Invalid LAT_FRONTEND_PORT');
 const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
