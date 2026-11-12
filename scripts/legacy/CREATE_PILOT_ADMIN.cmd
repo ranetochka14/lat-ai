@@ -1,5 +1,5 @@
 @echo off
-cd /d "%~dp0"
+cd /d "%~dp0..\.."
 set "PYTHONUTF8=1"
 set "PILOT_PY=.runtime\python\python.exe"
 if exist ".venv\Scripts\python.exe" set "PILOT_PY=.venv\Scripts\python.exe"

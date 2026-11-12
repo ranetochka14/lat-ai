@@ -2,7 +2,7 @@ param([string]$PythonExe, [switch]$NoBrowser, [switch]$EnableModel)
 $ErrorActionPreference = 'Stop'
 $projectDir = Split-Path -Parent $PSScriptRoot
 if (-not $PythonExe) { $PythonExe = Join-Path (Split-Path -Parent $projectDir) 'i02-venv/Scripts/python.exe' }
-if (-not (Test-Path -LiteralPath $PythonExe)) { throw 'Python environment missing. See docs/agent-handoff/RUNBOOK.md.' }
+if (-not (Test-Path -LiteralPath $PythonExe)) { throw 'Python environment missing. See docs/dev/runbook.md.' }
 $PythonExe = (Resolve-Path -LiteralPath $PythonExe).Path
 $runtimeDir = Join-Path $projectDir '.runtime/i02'
 foreach ($port in @(5173,8000,8372)) {

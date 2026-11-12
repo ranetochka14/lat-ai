@@ -1,8 +1,8 @@
-# Document pilot — approved scope, 2026-11-11
+# Мини-курсы и тесты по документам
 
-Owner requests: no mandatory teacher for pilot; automatic checking, hints, points and progress; personal documents and mini-courses/tests in ANY educational subject. Local existing model, no paid API, new weights or embeddings/RAG. New request authorizes the necessary Django/frontend integration. Preserve old sources, reports and databases. No merge/push or shutdown.
+We build private mini-courses and tests from a selected passage in any educational subject. Checking, hints, points and progress are automatic; teacher approval is optional. The pilot uses the existing local model, with no paid API, new weights, embeddings or RAG. Existing sources, reports and databases must be preserved. This specification describes the document pilot introduced on 11.11.2026 and the generation preferences added on 12.11.2026.
 
-## Chosen vertical slice
+## Materials and privacy
 
 Private StudyPack objects inside documents app, separate from public Python Course objects. This avoids making existing public course serializers responsible for private content. Display packs and their progress on Documents page and a dedicated study page. Existing Python grading remains automatic. Generated tests are single-choice (four distinct options, one key), automatically scored against AI-authored keys. Do not claim an LLM inference occurs for each choice or that AI is infallible. No required teacher/manual approval state. Failure produces no grade.
 
@@ -10,7 +10,7 @@ Upload TXT UTF-8, PDF with text, DOCX, PPTX up to 20 MiB. Local extraction only,
 
 Generation uses an explicitly selected contiguous excerpt of 100..6000 Unicode characters. Small documents default whole; larger UI shows exact selected range and says only that excerpt is covered. No false claim full long-document coverage. No embeddings/chunk retrieval. Mode course = 1..3 short lessons and 3..7 questions (legacy packs; new UI requests exactly 5, 6 or 7); mode test = no lessons and 3..7 questions (legacy packs; new UI requests exactly 5, 6 or 7). Title, lessons, questions, keys, hints, explanations come from the local model. Every lesson/question includes a nonempty verbatim source quote (20..500 characters); strict schema, bounds and duplicates validated on both Node and Django. Citation presence is traceability, not proof of truth. Invalid generation fails closed; no regex/default answer fallback.
 
-## Frozen interfaces
+## API and stored results
 
 Public API prefix /api/v1/documents/ (JWT):
 - GET/POST '' documents list/upload; item {id,title,mime_type,status,created_at,error,text_length}; file is not exposed.
@@ -28,38 +28,31 @@ StudyResult JSON: {title:string<=160,lessons:[{title:string<=160,content:string<
 
 Django management command run_study_jobs runs one durable queued job at a time using atomic conditional claim. POST dispatch is recorded before sending. On startup/interruption running jobs only GET/POST receipt (read-only operation), never repeat generation. A running receipt pending remains running; missing/unknown becomes unknown. Persist result after independent validation and ensure owner/document still exists; deletion while active blocked. Network result uncertain => unknown and later receipt can recover. Catch per-job failures without killing whole queue; waiting loop sleeps bounded. Provide --once for tests and launcher.
 
-Shared model: extend existing Tutor/LocalModel for study generation, use SAME busy slot/coordinator/owned model and quarantine. Dedicated study budget 180s, up to 2400 output tokens; existing tutor 8s budget unchanged. Study waiting uses bounded queue; quick tutor cannot wait minutes and returns busy/budget honestly. No second model instance or independent HTTP client bypass. Disable/timeout quarantines dispatched uncertain work; late work cannot overwrite terminal result. Worker HTTP envelope/body cap already sufficient; set timeouts deliberately for study. Existing local model can be enabled via operator as before. New isolated runtime/ports for live testing, do not stop user’s existing services.
+Shared model: extend existing Tutor/LocalModel for study generation, use SAME busy slot/coordinator/owned model and quarantine. Dedicated study budget 180s, up to 2400 output tokens; existing tutor 8s budget unchanged. Study waiting uses bounded queue; quick tutor cannot wait minutes and returns busy/budget honestly. No second model instance or independent HTTP client bypass. Disable/timeout quarantines dispatched uncertain work; late work cannot overwrite terminal result. Worker HTTP envelope/body cap already sufficient; set timeouts deliberately for study. The local model is enabled explicitly by the person running the pilot. New isolated runtime/ports for live testing, do not stop user’s existing services.
 
-## Work plan and file ownership
+## Component responsibilities
 
-1. Node implementer: integration/ai/{study*.mjs,worker-http.mjs,bridge.mjs,lifecycle.mjs,core/src/tutor.mjs,core/src/local-model.mjs}, focused tests. Implement strict output schema, durable replay/receipt and shared-slot model role; tests against fake model plus current Node suites.
-2. Django implementer: backend/documents/**, backend/config/ai_local*.py, necessary owner filter in courses/views.py; tests. Private models/migrations, upload/extraction with no embeddings, jobs/receipts and automatic grading/progress, API contract above. No global Course changes. Leave setup/requirements/root README to root.
-3. Frontend implementer: assets/app.js, assets/data.js, assets/styles.css (discover real CSS); dedicated Study route, documents upload/selection/generation/status/errors, MCQ/hint/results/progress, teacher-free wording. Tests where existing harness supports. No Node/backend edits.
-4. Root: isolation/snapshot, dependency setup and portable pilot launcher (Django+Node+study command+frontend, requirements/README), run combined tests, fresh live model examples from multiple subjects, browser end-to-end, package source+instructions+manifest and update canonical roadmap/sole STATUS. Retain logs/reports; final independent review.
+The Node worker validates generated content, stores results and serves receipts. It uses the shared model coordinator. The implementation is in `integration/ai/study*.mjs`, `worker-http.mjs`, `bridge.mjs`, `lifecycle.mjs`, `core/src/tutor.mjs` and `core/src/local-model.mjs`.
 
-## Verification / acceptance
+Django stores private documents and packs, extracts text, handles jobs, and calculates points and progress. Access checks cover `backend/documents/**`, `backend/config/ai_local*.py` and lesson documents in `courses/views.py`. Public Python courses remain separate.
 
-Privacy two accounts; forged ownership/grade/request IDs; malformed/truncated model JSON; misleading quoted keys are a documented quality risk, not considered solved by schema; queued concurrent jobs; crash after dispatch plus receipt; duplicate attempts do not inflate points; partial failed extraction; scanned PDF; large/zip-bomb files; XSS plain text; original four Python grading tests unchanged. Real model test at least three topics (history/biology/math) with synthetic documents and rubric checked by root; no actual student scores touched. Report real vs mocked checks separately.
+The interface in `assets/app.js`, `assets/data.js` and the styles shows document selection, generation status, lessons, questions, hints and results. It displays errors without inventing a grade. Setup starts Django, Node, the document queue and the site. A distributable package contains sources, instructions and a manifest; private runtime data stays outside it.
 
-## Pre-flight interface scan
+## Checks and quality limits
 
-Ruling after real synthetic output: generation is constrained to one concise lesson and three questions within the original accepted bounds. Source quotes come from deterministic exact substrings in a schema enum; no fuzzy correction. A second blind pass of the same local model sees source/questions/options/hints without candidate keys or explanations and must select the same unique supported keys. Wrong/ambiguous keys fail closed. A hint flagged unsafe is replaced with a fixed neutral process cue, not a claimed generated answer; it does not veto an otherwise valid pack. This narrow fallback followed an observed over-rejection of safe hints, and never applies to keys/lessons. This is correlated automatic checking, not independent validation. Tutor's total study budget remains180s. Known first failures and raw synthetic outputs are retained.
+Privacy two accounts; forged ownership/grade/request IDs; malformed/truncated model JSON; misleading quoted keys are a documented quality risk, not considered solved by schema; queued concurrent jobs; crash after dispatch plus receipt; duplicate attempts do not inflate points; partial failed extraction; scanned PDF; large/zip-bomb files; XSS plain text; original four Python grading tests unchanged. Real model test at least three topics (history/biology/math) with synthetic documents and content checked separately against the source; no actual student scores touched. Report real vs mocked checks separately.
 
-Ruling: existing Python auto_checked attempts can unlock further hints only after server validation of current task/rubric/content digest, canonical request UUID, three booleans, exact answer evidence and recomputed score. They keep auto_checked status; no human approval is fabricated. Explicitly reviewed historic attempts retain their prior behavior.
+## Decisions from early trials
 
-Ruling after content review: a generated mini-lesson can omit facts needed by its quiz. Public owner-only pack detail also returns source_excerpt (the immutable selected text snapshot, never keys); study UI displays it as plain text before the questions. This gives the learner the complete selected material and makes scope inspectable. It does not claim the generated summary/citation is complete.
+In the first live trial on synthetic material, generation was constrained to one concise lesson and three questions within the original accepted bounds. Source quotes come from deterministic exact substrings in a schema enum; no fuzzy correction. A second blind pass of the same local model sees source/questions/options/hints without candidate keys or explanations and must select the same unique supported keys. Wrong/ambiguous keys fail closed. A hint flagged unsafe is replaced with a fixed neutral process cue, not a claimed generated answer; it does not veto an otherwise valid pack. This narrow fallback followed an observed over-rejection of safe hints, and never applies to keys/lessons. This is correlated automatic checking, not independent validation. Tutor's total study budget remains180s. Known first failures and raw synthetic outputs are retained.
 
-| Pair/task | Shared interface | Ruling |
-|---|---|---|
-| Node/Django | /study+receipt, StudyResult | Exact contract above; no hidden answer keys exposed |
-| Django/UI | packs/routes/progress/code-point offsets | Exact contract above; UI Array.from for offsets |
-| Setup/all | ports/runtime/dependencies | Root owns launcher; agents use env port/runtime |
-| Node | timeouts vs queue/recovery | Long role uses same slot; never weaken tutor8s or quarantine |
-| Django | owner/privacy vs global courses | Separate packs; protect lesson documents too |
-| UI | user automation vs errors | No teacher gate; explicit error with no grade |
-| Root | current stage vs historical freeze | Latest explicit feature request supersedes old freeze for this scope |
+Existing Python auto_checked attempts can unlock further hints only after server validation of current task/rubric/content digest, canonical request UUID, three booleans, exact quotes supporting the answer and recomputed score. They keep auto_checked status; no human approval is fabricated. Explicitly reviewed historic attempts retain their prior behavior.
 
-Implementation ledger and evidence are kept in outputs/document-pilot-2026-11-11 outside frozen incoming source. This is a feature spec, not another canonical roadmap or STATUS.
+Content review showed a limitation: a generated mini-lesson can omit facts needed by its quiz. Public owner-only pack detail also returns source_excerpt (the immutable selected text snapshot, never keys); study UI displays it as plain text before the questions. This gives the learner the complete selected material and makes scope inspectable. It does not claim the generated summary/citation is complete.
+
+Offsets use Unicode code points on the server and `Array.from` in the browser. Model queue recovery and the tutor's 8-second budget stay unchanged. Private packs use ownership checks rather than the public course API. No mandatory teacher approval is added.
+
+Original trial logs are kept in `outputs/document-pilot-2026-11-11` in the external working area. They record the first failed generations as well as successful ones. These are historical results, not a current development plan.
 
 ## Generation preferences (2026-11-12)
 
@@ -67,7 +60,7 @@ The generation endpoint additionally accepts optional `generation_options: {ques
 
 The additive Django migration `0007_study_generation_options` stores the exact options with each pack. Apply it only after backing up the target runtime/database. Existing rows get `{}` and retain the old request shape and receipt fingerprint. The main database has not been migrated by this feature's verification. New options are included in Django conflict checks and the Node digest, including receipt reads; unknown requests are not automatically reissued. The public pack includes generation_options. New generation and final validation require the chosen question count, with no filler or truncation fallback.
 
-For explicit options the model output cap is 768 × (question_count + 1), at most 6144 tokens; each verifier cap is 384 × question_count. The existing 180-second study deadline, queue, quarantine, verification gates and assessment prompts are unchanged. Two small pinned-core overrides carry the options and these caps; LOCAL_OVERRIDES.json records the updated SHA256. No new weights or inference API is used. Larger generation has not yet been timed or pedagogically validated on the local GPU.
+For explicit options the model output cap is 768 × (question_count + 1), at most 6144 tokens; each verifier cap is 384 × question_count. The existing 180-second study deadline, queue, quarantine, validation rules and assessment prompts are unchanged. Two small pinned-core overrides carry the options and these caps; LOCAL_OVERRIDES.json records the updated SHA256. No new weights or inference API is used. Larger generation has not yet been timed or pedagogically validated on the local GPU.
 
 `detail` affects the new lecture and per-option explanations. The profile's answer detail adds a bounded style instruction to new code-tutor questions, preserves the original code snapshot and retry body, and never changes assessment criteria. Existing packs/grades are not rewritten. The helper question field allows 1900 characters to reserve room within the 2000-character contract.
 
